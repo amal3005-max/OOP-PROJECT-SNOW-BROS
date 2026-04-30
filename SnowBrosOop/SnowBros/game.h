@@ -4,12 +4,15 @@
 #include "statemanager.h"
 #include "inputmanager.h"
 
+class Player;
+
 class Game
 {
 private:
     sf::RenderWindow window;
     StateManager stateManager;
     InputManager inputManager;
+
 public:
     Game();
     void run();

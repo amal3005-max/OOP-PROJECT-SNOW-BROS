@@ -1,6 +1,6 @@
 #include "Player.h"
 
-const float WINDOW_WIDTH = 600.f;
+const float WINDOW_WIDTH = 800.f;
 const float WINDOW_HEIGHT = 600.f;
 
 Player::Player(sf::Keyboard::Key l, sf::Keyboard::Key r, sf::Keyboard::Key j)
@@ -9,8 +9,7 @@ Player::Player(sf::Keyboard::Key l, sf::Keyboard::Key r, sf::Keyboard::Key j)
     body.setFillColor(sf::Color::Red);
     body.setPosition(200, 200);
 
-    
-
+    //body.setOrigin(20.f, 20.f);
     speed = 200.f;
     velocityY = 0.f;
     gravity = 800.f;
@@ -19,6 +18,14 @@ Player::Player(sf::Keyboard::Key l, sf::Keyboard::Key r, sf::Keyboard::Key j)
     leftKey = l;
     rightKey = r;
     jumpKey = j;
+
+	direction = 1;
+    //initTexture();
+}
+
+sf::FloatRect Player::getBounds() const
+{
+    return body.getGlobalBounds();
 }
 
 void Player::handleInput()
@@ -64,25 +71,47 @@ void Player::update(float dt)
     float y = body.getPosition().y;
     float width = body.getSize().x;
 
-    if (x + width < 0)        // fully left
+    if (x + width < 0)        
     {
-        body.setPosition(600, y);
+        body.setPosition(800, y);
     }
-    else if (x > 600)         // fully right
+    else if (x > 800)        
     {
         body.setPosition(-width, y);
     }
 
     if (!sf::Keyboard::isKeyPressed(jumpKey) && velocityY < 0)
     {
-        velocityY *= 0.95f; // cuts jump height
+        velocityY *= 0.95f; 
     }
+
+    if (sf::Keyboard::isKeyPressed(leftKey))
+        direction = -1;
+
+    if (sf::Keyboard::isKeyPressed(rightKey))
+        direction = 1;
 }
 
-void Player::draw(sf::RenderWindow& window)
+void Player::draw(sf::RenderWindow& window, bool debugMode)
 {
     window.draw(body);
-    //window.draw(platform);
+    //window.draw(sprite);
+
+
+    if (debugMode)
+    {
+        sf::FloatRect bounds = body.getGlobalBounds();
+
+        sf::RectangleShape hitbox;
+        hitbox.setPosition(bounds.left, bounds.top);
+        hitbox.setSize(sf::Vector2f(bounds.width, bounds.height));
+        hitbox.setFillColor(sf::Color::Transparent);
+        hitbox.setOutlineColor(sf::Color::Green);
+        hitbox.setOutlineThickness(1);
+
+        window.draw(hitbox);
+        //window.draw(body);
+    }
 }
 void Player::checkPlatformCollision(sf::RectangleShape& platform)
 {

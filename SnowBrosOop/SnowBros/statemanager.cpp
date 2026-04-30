@@ -1,6 +1,5 @@
 
 #include "statemanager.h"
-//#include "state.h"
 #include "game.h"
 
 StateManager::StateManager()
