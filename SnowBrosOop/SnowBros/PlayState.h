@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <SFML/Graphics.hpp>
@@ -6,8 +7,10 @@
 #include "Snowball.h"
 #include "Enemy.h"
 #include "Botttom.h"
-//#include "FlyingFooga.h"
-//#include "Tornado.h"
+#include "FlyingFooga.h"
+#include "Tornado.h"
+#include "Projectile.h"
+#include "Knife.h"
 
 class PlayState : public State
 {
@@ -18,8 +21,6 @@ private:
 	static const int MAX_ENEMIES = 20;
     Enemy* enemies[MAX_ENEMIES];
 	int enemyCount;
-    //Enemy* enemy;
-    //Enemy* bottom;
 
     sf::RectangleShape platforms[10];
     int platformCount;
@@ -29,19 +30,29 @@ private:
     static const int MAX_SNOWBALLS = 1000;
     Snowball* snowballs[MAX_SNOWBALLS];
     int snowballCount;
+    static const int MAX_PROJECTILES = 200;
+    Projectile* projectiles[MAX_PROJECTILES];
+    int projectileCount;
+
     bool isFPressed;
     float fireTimer;
     float fireCooldown;
+
+    sf::Font font;
+    sf::Text livesText1;
+    sf::Text livesText2;
+    bool gameOver = false;
 
 public:
     PlayState(StateManager& manager);
     ~PlayState();
 
-    void removeEnemy(int index);   // removes & deletes enemies[index]
+    void removeEnemy(int index);  
 
     void handleInput(sf::Event& event) override;
     void update(float deltaTime) override;
     void render(sf::RenderWindow& window) override;
 
     void spawnSnowball(float x, float y, int direction);
+    void spawnKnife(sf::Vector2f pos, sf::Vector2f dir);
 };

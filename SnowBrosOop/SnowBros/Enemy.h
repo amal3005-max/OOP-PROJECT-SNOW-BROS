@@ -55,6 +55,10 @@ public:
     virtual void push(float dx);
     bool isPushable() const;
     bool isrolling() const { return isRolling; }
+    sf::Vector2f getPosition() const
+    {
+        return body.getPosition();
+    }
 };
 
 class SimpleEnemy : public Enemy
@@ -79,10 +83,10 @@ class FlyingEnemy : public Enemy
 {
 protected:
     float patrolSpeed;
-    float amplitude;    // vertical sine wave amplitude
-    float frequency;    // sine wave frequency
-    float timeAccum;    // accumulates dt for sine calc
-    float baseY;        // Y anchor for sine wave
+    float amplitude; 
+    float frequency; 
+    float timeAccum; 
+    float baseY;  
 
 public:
     FlyingEnemy(EnemyType t, float spd, sf::Vector2f pos);

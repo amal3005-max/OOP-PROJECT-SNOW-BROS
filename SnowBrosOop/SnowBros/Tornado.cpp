@@ -1,38 +1,7 @@
 #include "Tornado.h"
 #include <iostream>
 using namespace std;
-//Tornado::Tornado(sf::Vector2f p) : FlyingFooga (p)
-//{
-//    position = p;
-//    knifeTimer = 0;
-//}
-//void Tornado ::update (float dt)
-//{
-//    FlyingFooga::update(dt);
-//    if (isFlying)
-//    {
-//     
-//        speed = 55.f + rand() % 250; // it randomized speed only during flying 
-//        knifeTimer += dt;
-//       
-//        if (knifeTimer > 3.0f)
-//        {
-//            knifeTimer = 0;
-//            
-//        }
-//   }
-//    
-//}
-//void Tornado::draw(sf::RenderWindow& window)
-//{
-//    sf:: RectangleShape rect(sf::Vector2f(40, 40));
-//    rect.setPosition(position);
-//    rect.setFillColor(sf::Color::White);
-//    window.draw (rect);
-//
-//}
 
-#include "Tornado.h"
 #include <cstdlib> // for rand()
 
 Tornado::Tornado(sf::Vector2f p)

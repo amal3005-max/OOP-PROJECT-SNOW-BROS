@@ -5,10 +5,7 @@
 
 class StateManager;
 
-enum class GameMode {
-    SinglePlayer,
-    TwoPlayer
-};
+enum class GameMode { SinglePlayer, TwoPlayer };
 
 class State
 {
@@ -28,10 +25,18 @@ class StateManager
 {
 private:
     State* currentState;
+    State* previousState;
     GameMode mode;
+    bool running;
 public:
     StateManager();
     ~StateManager();
+
+    void quit();
+    bool isRunning() const;
+
+    void pauseState(State* pauseState);
+    void resumeState();
 
     void changeState(State* newState);
 
@@ -43,7 +48,6 @@ public:
     {
         mode = m;
     }
-
     GameMode getMode()
     {
         return mode;

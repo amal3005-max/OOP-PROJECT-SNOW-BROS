@@ -2,10 +2,10 @@
 #include <cmath>
 
 Knife::Knife(sf::Vector2f pos, sf::Vector2f dir)
-    : Projectile(pos, dir * 300.f, 1.0f, true)
+    : Projectile(pos, dir * 150.f, 1.0f, true)
 {
-    body.setSize(sf::Vector2f(20.f, 5.f));
-    body.setFillColor(sf::Color::Red);
+    body.setSize(sf::Vector2f(30, 8));   // bigger
+    body.setFillColor(sf::Color::Red);   // bright color
     body.setPosition(pos);
 
     // optional: rotate knife in direction of travel

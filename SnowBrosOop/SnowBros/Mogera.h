@@ -1,5 +1,5 @@
-//#include "EEnemy.h"
-//#include "MogeraChild.h"
+#include "Enemy.h"
+#include "MogeraChild.h"
 //class Mogera :public Enemy 
 //{
 //private:

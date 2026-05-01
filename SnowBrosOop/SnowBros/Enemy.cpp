@@ -113,13 +113,12 @@ FlyingEnemy::FlyingEnemy(EnemyType t, float spd, sf::Vector2f pos)
     body.setFillColor(sf::Color::Magenta);
     body.setPosition(pos);
     flight = true;
-    onGround = false;          // never lands
+    onGround = false;        
     hitBox = body.getGlobalBounds();
 }
 
 void FlyingEnemy::update(float dt)
 {
-    // Color feedback (same snow coat logic)
     if (isFullyEncased())
         body.setFillColor(sf::Color::Cyan);
     else if (snowCoat > 0)
@@ -143,7 +142,6 @@ void FlyingEnemy::update(float dt)
     {
         timeAccum += dt;
 
-        // Horizontal patrol
         float dx = patrolSpeed * direction * dt;
         body.move(dx, 0.f);
 

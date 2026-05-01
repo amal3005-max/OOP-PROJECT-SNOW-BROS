@@ -5,11 +5,15 @@
 StateManager::StateManager()
 {
     currentState = nullptr;
+    previousState = nullptr;
+    running = true;
+
 }
 
 StateManager::~StateManager()
 {
     delete currentState;
+    delete previousState;
 }
 
 void StateManager::changeState(State* newState)
@@ -40,4 +44,30 @@ void StateManager::render(sf::RenderWindow& window)
     {
         currentState->render(window);
     }
+}
+
+void StateManager::pauseState(State* pauseState)
+{
+    if (currentState)
+        previousState = currentState;   // save PlayState
+
+    currentState = pauseState;         // switch to PauseState
+}
+void StateManager::resumeState()
+{
+    if (currentState)
+        delete currentState;
+
+    currentState = previousState;      // restore PlayState
+    previousState = nullptr;
+}
+
+void StateManager::quit()
+{
+    running = false;
+}
+
+bool StateManager::isRunning() const
+{
+    return running;
 }
