@@ -1,27 +1,3 @@
-//#include "Enemy.h"
-//class MogeraChild :public Enemy
-//{
-//private:
-//	sf::Vector2f direction;
-//public:
-//	MogeraChild(sf::Vector2f playerPosition,sf::Vector2f MogeraPosition);
-//	void draw(sf::RenderWindow &window);
-//	void update(float dt);
-//};
-//#pragma once
-//#include "Enemy.h"
-//
-//class MogeraChild : public SimpleEnemy
-//{
-//private:
-//    float moveSpeedX; // signed horizontal speed: positive = right, negative = left
-//
-//public:
-//    MogeraChild(sf::Vector2f mogeraPosition, sf::Vector2f playerPosition);
-//
-//    void update(float dt) override;
-//    void draw(sf::RenderWindow& window, bool debugMode) override;
-//};
 
 #pragma once
 

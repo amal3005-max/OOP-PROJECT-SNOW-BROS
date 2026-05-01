@@ -2,52 +2,6 @@
 
 #include "Enemy.h"
 #include "MogeraChild.h"
-//class Mogera :public Enemy 
-//{
-//private:
-//	int childCount;
-//	MogeraChild* children[20];
-//	float spawnTime;
-//	void spawnChild(sf::Vector2f playerPosition);
-//public:
-//	Mogera(sf::Vector2f p);
-//	void update(float dt,sf::Vector2f playerPosition);
-//	void draw(sf::RenderWindow& window);
-//	
-//};
-//
-//#pragma once
-//#include "Enemy.h"
-//#include "MogeraChild.h"
-//
-//class Mogera : public SimpleEnemy
-//{
-//private:
-//    int health;
-//    float spawnTimer;
-//    float spawnInterval;
-//
-//    static const int MAX_CHILDREN = 20;
-//    MogeraChild* children[MAX_CHILDREN];
-//    int childCount;
-//
-//    //void spawnChild(sf::Vector2f playerPosition);
-//
-//public:
-//    Mogera(sf::Vector2f pos);
-//    MogeraChild* spawnChild(sf::Vector2f playerPosition);
-//
-//    void update(float dt, sf::Vector2f playerPosition);
-//    void draw(sf::RenderWindow& window, bool debugMode);
-//
-//    virtual void setTarget(sf::Vector2f playerPos) {};
-//
-//    bool isAlive() const override;
-//};
-
-#pragma once
-#include "Enemy.h"
-#include "MogeraChild.h"
 
 class Mogera : public SimpleEnemy
 {
