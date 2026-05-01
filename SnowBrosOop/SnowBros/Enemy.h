@@ -28,6 +28,10 @@ protected:
     sf::FloatRect hitBox;
     int bounceCount = 0;
     bool onGround;
+
+protected:
+    sf::Vector2f targetPosition;
+
 public:
     int direction = 1;
     bool enemyToDelete = false;
@@ -39,7 +43,7 @@ public:
 
     void checkPlatformCollision(sf::RectangleShape& platform);
     void hitBySnowball(float amount);
-    bool isAlive() const;
+    virtual bool isAlive() const;
     bool isFullyEncased() const;
     void explode();
 
@@ -58,6 +62,10 @@ public:
     sf::Vector2f getPosition() const
     {
         return body.getPosition();
+    }
+    void setTarget(sf::Vector2f target)
+    {
+        targetPosition = target;
     }
 };
 
