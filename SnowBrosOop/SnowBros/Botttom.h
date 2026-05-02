@@ -15,6 +15,8 @@ protected:
 	float jumpCooldown;
 	float jumpTimer;
 
+	float edgeJumpTimer;
+	float jumpTimerLocal;
 public:
 	Botom (sf::Vector2f p);
 	void reverse();

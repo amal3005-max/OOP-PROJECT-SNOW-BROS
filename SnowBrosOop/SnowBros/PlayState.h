@@ -13,6 +13,7 @@
 #include "Knife.h"
 #include "Mogera.h"
 #include "Gamakichi.h"
+#include "LevelManager.h"
 
 class PlayState : public State
 {
@@ -23,9 +24,11 @@ private:
 	static const int MAX_ENEMIES = 20;
     Enemy* enemies[MAX_ENEMIES];
 	int enemyCount;
+
     Mogera* mogera = nullptr;
     Gamakichi* gamakichi = nullptr;
 
+    LevelManager levelManager;
     sf::RectangleShape platforms[10];
     int platformCount;
 
@@ -48,18 +51,8 @@ private:
     bool gameOver = false;
 
     float mogeraSpawnTimer = 0.f;
-
-    struct ArtilleryPoint
-    {
-        sf::Vector2f position;
-        float timer;
-        float fireRate;
-    };
-
-    static const int MAX_ARTILLERY = 6;
-    ArtilleryPoint artillery[MAX_ARTILLERY];
-    int artilleryCount;
-
+private:
+    void loadLevel();
 public:
     PlayState(StateManager& manager);
     ~PlayState();
@@ -72,4 +65,5 @@ public:
 
     void spawnSnowball(float x, float y, int direction);
     void spawnKnife(sf::Vector2f pos, sf::Vector2f dir);
+
 };

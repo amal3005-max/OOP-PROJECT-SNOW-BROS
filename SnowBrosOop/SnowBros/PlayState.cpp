@@ -655,18 +655,20 @@ PlayState::PlayState(StateManager& manager)
     livesText2.setFillColor(sf::Color::White);
     livesText2.setPosition(10.f, 40.f);
 
-    // Normal enemies
-    enemies[enemyCount++] = new Botom(sf::Vector2f(100, 400));
+    //// Normal enemies
+    //enemies[enemyCount++] = new Botom(sf::Vector2f(100, 400));
 
-    // Bosses (set one to nullptr if you only want one active)
-    mogera = nullptr;                                    // swap to new Mogera(...) to enable
-    enemies[enemyCount++] = new Botom(sf::Vector2f(100, 400));
-    //enemies[enemyCount++] = new FlyingFooga(sf::Vector2f(100, 400));
-    //enemies[enemyCount++] = new Tornado(sf::Vector2f(100, 400));
+    //// Bosses (set one to nullptr if you only want one active)
+    //mogera = nullptr;                                    // swap to new Mogera(...) to enable
+    //enemies[enemyCount++] = new Botom(sf::Vector2f(100, 400));
+    ////enemies[enemyCount++] = new FlyingFooga(sf::Vector2f(100, 400));
+    ////enemies[enemyCount++] = new Tornado(sf::Vector2f(100, 400));
 
-    //mogera = new Mogera(sf::Vector2f(500.f, 250.f));
-    //gamakichi = new Gamakichi(sf::Vector2f(200.f, 300.f));
-    gamakichi = new Gamakichi(sf::Vector2f(200.f, 300.f)); // centred-ish at top
+    ////mogera = new Mogera(sf::Vector2f(500.f, 250.f));
+    ////gamakichi = new Gamakichi(sf::Vector2f(200.f, 300.f));
+    //gamakichi = new Gamakichi(sf::Vector2f(200.f, 300.f)); // centred-ish at top
+
+    loadLevel();
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -685,6 +687,13 @@ PlayState::~PlayState()
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+//void PlayState::removeEnemy(int index)
+//{
+//    delete enemies[index];
+//    enemies[index] = enemies[--enemyCount];
+//    enemies[enemyCount] = nullptr;
+//}
+
 void PlayState::removeEnemy(int index)
 {
     delete enemies[index];
@@ -734,6 +743,8 @@ void PlayState::handleInput(sf::Event& event)
 // ─────────────────────────────────────────────────────────────────────────────
 void PlayState::update(float deltaTime)
 {
+
+
     // ── Players ─────────────────────────────────────────────────────────────
     player1.handleInput();
     player1.update(deltaTime);
@@ -742,6 +753,16 @@ void PlayState::update(float deltaTime)
     {
         player2->handleInput();
         player2->update(deltaTime);
+    }
+
+
+    sf::FloatRect pb = player1.getBounds();
+    sf::Vector2f playerCenter(pb.left + pb.width / 2.f, pb.top + pb.height / 2.f);
+
+    for (int e = 0; e < enemyCount; e++)
+    {
+        if (enemies[e])
+            enemies[e]->setTarget(playerCenter);
     }
 
     // ── Platform collision ───────────────────────────────────────────────────
@@ -1016,6 +1037,14 @@ void PlayState::update(float deltaTime)
     livesText1.setString("P1 Lives: " + std::to_string(player1.getLives()));
     if (player2)
         livesText2.setString("P2 Lives: " + std::to_string(player2->getLives()));
+
+    //if (enemyCount == 0 && !mogera && !gamakichi)
+    if (enemyCount == 0)
+    {
+        levelManager.nextLevel();
+        loadLevel();
+    }
+
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -1024,6 +1053,7 @@ void PlayState::update(float deltaTime)
 void PlayState::render(sf::RenderWindow& window)
 {
     window.clear(sf::Color::Black);
+    levelManager.drawBackground(window);
 
     player1.draw(window, debugMode);
     if (player2) player2->draw(window, debugMode);
@@ -1062,3 +1092,97 @@ void PlayState::spawnKnife(sf::Vector2f pos, sf::Vector2f dir)
     if (projectileCount < MAX_PROJECTILES)
         projectiles[projectileCount++] = new Knife(pos, dir);
 }
+void PlayState::loadLevel()
+{
+    LevelConfig& lvl = levelManager.getCurrentLevel();
+
+    // ---------------- PLATFORMS ----------------
+    platformCount = lvl.platformCount;
+    for (int i = 0; i < platformCount; i++)
+    {
+        platforms[i].setSize(lvl.platforms[i].size);
+        platforms[i].setPosition(lvl.platforms[i].position);
+        platforms[i].setFillColor(sf::Color(255, 255, 255, 0));
+    }
+
+    // ---------------- ENEMIES ----------------
+    enemyCount = 0;
+
+    for (int i = 0; i < lvl.enemyCount; i++)
+    {
+        EnemySpawn& e = lvl.enemies[i];
+
+        if (e.type == EnemyType::Botom)
+        {
+            enemies[enemyCount++] = new Botom(e.position);
+        }
+        else if (e.type == EnemyType::FlyingFoogaFog)
+        {
+            enemies[enemyCount++] = new FlyingFooga(e.position);
+        }
+        else if (e.type == EnemyType::Tornado)
+        {
+            enemies[enemyCount++] = new Tornado(e.position);
+        }
+    }
+
+    // ---------------- BOSSES ----------------
+    if (lvl.hasMogera)
+    {
+        enemies[enemyCount++] = new Mogera(sf::Vector2f(400, 200));
+    }
+
+    if (lvl.hasGamakichi)
+    {
+        enemies[enemyCount++] = new Gamakichi(sf::Vector2f(400, 150));
+    }
+
+
+}
+
+
+//void PlayState::loadLevel()
+//{
+//    // Clear enemies
+//    for (int i = 0; i < enemyCount; i++)
+//        delete enemies[i];
+//
+//    enemyCount = 0;
+//
+//    if (mogera) { delete mogera; mogera = nullptr; }
+//    if (gamakichi) { delete gamakichi; gamakichi = nullptr; }
+//
+//    LevelConfig& level = levelManager.getCurrentLevel();
+//
+//    // ─── Platforms ───
+//    platformCount = level.platformCount;
+//
+//    for (int i = 0; i < platformCount; i++)
+//    {
+//        platforms[i].setSize(level.platforms[i].size);
+//        platforms[i].setPosition(level.platforms[i].position);
+//        platforms[i].setFillColor(sf::Color::White);
+//    }
+//
+//    // ─── Enemies ───
+//    for (int i = 0; i < level.enemyCount; i++)
+//    {
+//        EnemySpawn& s = level.enemies[i];
+//
+//        if (s.type == EnemyType::Botom)
+//            enemies[enemyCount++] = new Botom(s.position);
+//
+//        else if (s.type == EnemyType::FlyingFoogaFog)
+//            enemies[enemyCount++] = new FlyingFooga(s.position);
+//
+//        else if (s.type == EnemyType::Tornado)
+//            enemies[enemyCount++] = new Tornado(s.position);
+//    }
+//
+//    // ─── Bosses ───
+//    if (level.hasMogera)
+//        mogera = new Mogera(sf::Vector2f(400, 200));
+//
+//    if (level.hasGamakichi)
+//        gamakichi = new Gamakichi(sf::Vector2f(200, 200));
+//}

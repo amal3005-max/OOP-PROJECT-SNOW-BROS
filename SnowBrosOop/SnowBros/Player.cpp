@@ -202,7 +202,8 @@ Player::Player(sf::Keyboard::Key l, sf::Keyboard::Key r, sf::Keyboard::Key j)
 {
     body.setSize(sf::Vector2f(40, 40));
     body.setFillColor(sf::Color::Red);
-    body.setPosition(200, 200);
+    //body.setPosition(200, 200);
+    body.setPosition(sf::Vector2f(300.f, 480.f));
 
     speed = 200.f;
     velocityY = 0.f;
