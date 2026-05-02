@@ -1,5 +1,3 @@
-
-
 #include "Gamakichi.h"
 #include <cstdlib>
 #include <cmath>
@@ -37,8 +35,7 @@ Gamakichi::Gamakichi(sf::Vector2f pos)
 
     // Fire rates: outer cannons fire faster, inner (top) slower
     //float rates[MAX_CANNONS] = { 3.5f, 4.0f, 5.0f, 5.0f, 4.0f, 3.5f };
-    float rates[MAX_CANNONS] =
-    {
+    float rates[MAX_CANNONS] = {
         8.5f, 9.0f, 9.5f,
         9.5f, 9.0f, 8.5f
     };
@@ -167,7 +164,7 @@ void Gamakichi::draw(sf::RenderWindow& window, bool debugMode)
 
     // Health bar
     float barW = body.getSize().x;
-    float fraction = static_cast<float>(health) / 2000.f;
+    float fraction = static_cast<float>(health) / 1000.f;
     if (fraction < 0.f) fraction = 0.f;
 
     sf::RectangleShape hpBg(sf::Vector2f(barW, 12.f));

@@ -4,12 +4,14 @@
 #include "inputmanager.h"
 #include "Player.h"
 #include "MenuState.h"
+#include "SoundManager.h"
 #include <iostream>
 using namespace std;
 
 class LogoState : public State
 {
 private:
+    Game& game;
     sf::Texture logoTexture;
     sf::Sprite logoSprite;
 
@@ -21,11 +23,13 @@ private:
     sf::Clock timer;
     sf::Clock blinkClock;
 public:
-    LogoState(StateManager& manager) : State(manager)
+    LogoState(StateManager& manager) : State(manager), game(game)
     {
         // load image and font
         logoTexture.loadFromFile("logo2.png");
         font.loadFromFile("ARCADE.otf");
+        // Inside LogoState constructor, after loading font — ADD:
+        //game.getSoundManager().play("snow_bros_theme_01.ogg");
 
         logoSprite.setTexture(logoTexture);
 
@@ -59,6 +63,10 @@ public:
 
         float copy2X = (800 - copyright2.getGlobalBounds().width) / 2;
         copyright2.setPosition(copy2X, 530);
+
+        //game.getSoundManager().play("snow_bros_theme_01.ogg");
+        //manager.getSoundManager().play("snow_bros_theme_01.ogg");
+        gSound().play("SnowBrosAssets/Sounds/snow_bros_theme_01.ogg");
     }
 
     void handleInput(sf::Event& event) override
@@ -67,6 +75,8 @@ public:
         {
             if (event.key.code == sf::Keyboard::Enter)
             {
+                gSound().play("SnowBrosAssets/Sounds/snow_bros_theme_02.ogg");
+                //game.getSoundManager().play("snow_bros_theme_02.ogg");
                 manager.changeState(new MenuState(manager));
             }
         }
@@ -104,6 +114,7 @@ public:
 
 Game::Game() : window(sf::VideoMode(800, 600), "Snow Bros Game")
 {
+    //stateManager.setSoundManager(&soundManager);
     stateManager.changeState(new LogoState(stateManager));
     
 }

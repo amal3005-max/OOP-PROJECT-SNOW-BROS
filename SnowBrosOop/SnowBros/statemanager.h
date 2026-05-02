@@ -2,6 +2,8 @@
 
 #include <SFML/Graphics.hpp>
 #include "inputmanager.h"
+#include "SoundManager.h"        // ← ADD
+
 
 class StateManager;
 
@@ -28,6 +30,8 @@ private:
     State* previousState;
     GameMode mode;
     bool running;
+    SoundManager* soundManager = nullptr;   // ← ADD
+
 public:
     StateManager();
     ~StateManager();
@@ -52,4 +56,7 @@ public:
     {
         return mode;
     }
+
+    void setSoundManager(SoundManager* sm) { soundManager = sm; }  // ← ADD
+    SoundManager* getSound() { return soundManager; }
 };

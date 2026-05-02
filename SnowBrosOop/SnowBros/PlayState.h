@@ -14,6 +14,7 @@
 #include "Mogera.h"
 #include "Gamakichi.h"
 #include "LevelManager.h"
+#include "SoundManager.h"    // ← ADD at the top of PlayState.cpp
 
 class PlayState : public State
 {
@@ -51,6 +52,11 @@ private:
     bool gameOver = false;
 
     float mogeraSpawnTimer = 0.f;
+
+    // PlayState.h — add these members
+    int totalEnemiesDefeated = 0;
+    int totalScore = 0;
+
 private:
     void loadLevel();
 public:

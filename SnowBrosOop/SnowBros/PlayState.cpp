@@ -601,6 +601,7 @@
 #include "PlayState.h"
 #include "MenuState.h"
 #include "PauseState.h"
+#include "WinState.h"   
 #include "GameOver.h"
 #include "Player.h"
 #include <cmath>
@@ -696,10 +697,13 @@ PlayState::~PlayState()
 
 void PlayState::removeEnemy(int index)
 {
+    totalEnemiesDefeated++;          // ← add this
+    totalScore += 100;
     delete enemies[index];
     enemies[index] = enemies[--enemyCount];
     enemies[enemyCount] = nullptr;
 }
+
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Input
@@ -1322,12 +1326,44 @@ void PlayState::update(float deltaTime)
     //    loadLevel();
     //}
 
+    //if (enemyCount == 0 && !gameOver)
+    //{
+    //    if (!levelManager.isLastLevel())
+    //    {
+    //        levelManager.nextLevel();
+    //        loadLevel();
+    //    }
+    //}
+    if (enemyCount == 0 && !gamakichi && !gameOver)
+    {
+        if (levelManager.isLastLevel())
+        {
+            // ── TRIGGER WIN STATE ──
+            manager.changeState(new WinState(manager,
+                totalScore,
+                totalEnemiesDefeated,
+                levelManager.getTotalLevels()));
+        }
+        else 
+        {
+            levelManager.nextLevel();
+            loadLevel();
+        }
+    
+    }
+
     if (enemyCount == 0 && !gameOver)
     {
         if (!levelManager.isLastLevel())
         {
             levelManager.nextLevel();
-            loadLevel();
+            loadLevel();   // loadLevel() already handles music switching
+        }
+        // ADD else for game complete:
+        else
+        {
+            if (manager.getSound()) manager.getSound()->stop();
+            // optionally change to a win state here
         }
     }
 }
@@ -1380,6 +1416,16 @@ void PlayState::spawnKnife(sf::Vector2f pos, sf::Vector2f dir)
 
 void PlayState::loadLevel()
 {
+
+    if (manager.getSound())
+    {
+        LevelConfig& lvl = levelManager.getCurrentLevel();
+        if (lvl.hasMogera || lvl.hasGamakichi)
+            manager.getSound()->play("SnowBrosAssets/Sounds/final_boss_snow_bros.ogg");
+        else
+            manager.getSound()->play("SnowBrosAssets/Sounds/snow_bros_level.ogg");
+    }
+
     gameOver = false;
     // Clear enemies
     for (int i = 0; i < enemyCount; i++)
@@ -1401,7 +1447,7 @@ void PlayState::loadLevel()
     {
         platforms[i].setSize(lvl.platforms[i].size);
         platforms[i].setPosition(lvl.platforms[i].position);
-        platforms[i].setFillColor(sf::Color(255, 255, 255 ));
+        platforms[i].setFillColor(sf::Color(255, 255, 255, 0));
     }
 
     // ---------------- ENEMIES ----------------
@@ -1420,15 +1466,26 @@ void PlayState::loadLevel()
     // ---------------- BOSSES ----------------
     if (lvl.hasMogera)
     {
+        gSound().play("SnowBrosAssets/Sounds/final_boss_snow_bros.ogg");
+
         mogera = new Mogera(sf::Vector2f(570, 135));
         enemies[enemyCount++] = mogera;  // ← SAME pointer as member
     }
 
     if (lvl.hasGamakichi)
     {
+        gSound().play("SnowBrosAssets/Sounds/final_boss_snow_bros.ogg");
         gamakichi = new Gamakichi(sf::Vector2f(200, 310));
         enemies[enemyCount++] = gamakichi;  // ← SAME pointer as member
     }
+
+
+    //// ADD at the very end of loadLevel():
+    //LevelConfig& lvl = levelManager.getCurrentLevel();
+    //if (lvl.hasMogera || lvl.hasGamakichi)
+    //    gSound().play("final_boss_snow_bros.ogg");
+    //else
+    //    gSound().play("snow_bros_level.ogg");
 }
 //void PlayState::loadLevel()
 //{

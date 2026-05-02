@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include "statemanager.h"
 #include "inputmanager.h"
+#include "SoundManager.h"
 
 class Player;
 
@@ -16,4 +17,5 @@ private:
 public:
     Game();
     void run();
+    //SoundManager& getSoundManager() { return soundManager; }  // ← ADD THIS
 };
