@@ -107,7 +107,7 @@
 LevelManager::LevelManager()
 {
 
-    currentLevel = 0;
+    currentLevel = 9;
     totalLevels = 10;
 
     srand((time(0)));
@@ -125,21 +125,21 @@ LevelManager::LevelManager()
     int bonus2 = eligible[6];
 
 
-    // ── TEST ONLY LEVEL 1 BACKGROUND ──
-    if (!level1Texture.loadFromFile("Default Levels/Default Levels/lvl1.png"))
-    {
-        std::cout << "Failed to load Level 1 background\n";
-    }
+    //// ── TEST ONLY LEVEL 1 BACKGROUND ──
+    //if (!level1Texture.loadFromFile("Default Levels/Default Levels/lvl1.png"))
+    //{
+    //    std::cout << "Failed to load Level 1 background\n";
+    //}
 
-    level1Sprite.setTexture(level1Texture);
-    level1Sprite.setPosition(0.f, 0.f);
-    sf::Vector2u textureSize = level1Texture.getSize();
-    sf::Vector2u windowSize = {800, 600};
+    //level1Sprite.setTexture(level1Texture);
+    //level1Sprite.setPosition(0.f, 0.f);
+    //sf::Vector2u textureSize = level1Texture.getSize();
+    //sf::Vector2u windowSize = {800, 600};
 
-    level1Sprite.setScale(
-        (float)windowSize.x / textureSize.x,
-        (float)windowSize.y / textureSize.y
-    );
+    //level1Sprite.setScale(
+    //    (float)windowSize.x / textureSize.x,
+    //    (float)windowSize.y / textureSize.y
+    //);
 
     //loadBackgrounds();
     // =========================================================================
@@ -181,20 +181,23 @@ LevelManager::LevelManager()
         // Theme: Ice Cave
         // =========================================================================
         levels[1].levelNumber = 2;
-    levels[1].platformCount = 8;
+    levels[1].platformCount = 9;
     // bottom pair
-    levels[1].platforms[0] = { {  80, 460}, {190, 15} };
-    levels[1].platforms[1] = { { 530, 460}, {190, 15} };
+    levels[1].platforms[0] = { {  110, 388}, {90, 130} };
+    levels[1].platforms[1] = { { 110, 480}, {540, 35} };
     // ascending left stair
-    levels[1].platforms[2] = { {  80, 370}, {150, 15} };
-    levels[1].platforms[3] = { { 240, 290}, {150, 15} };
+    levels[1].platforms[2] = { { 610, 290}, {90, 130} };
+    levels[1].platforms[3] = { { 300, 390}, {400, 35} };
+    
     // centre top
-    levels[1].platforms[4] = { { 330, 210}, {140, 15} };
+    levels[1].platforms[4] = { { 155, 130}, {350, 35} };
+    
     // descending right stair
-    levels[1].platforms[5] = { { 430, 290}, {150, 15} };
-    levels[1].platforms[6] = { { 570, 370}, {150, 15} };
+    levels[1].platforms[5] = { { 110, 220}, {90, 130} };
+    levels[1].platforms[6] = { { 110, 310}, {400, 35} };
     // centre low shelf
-    levels[1].platforms[7] = { { 305, 430}, {190, 15} };
+    levels[1].platforms[7] = { { 610, 140}, {90, 130} };
+    levels[1].platforms[8] = { { 300, 210}, {400, 35} };
 
 
     levels[1].enemyCount = 4;
@@ -212,22 +215,32 @@ LevelManager::LevelManager()
         // Theme: Winter Forest
         // =========================================================================
         levels[2].levelNumber = 3;
-    levels[2].platformCount = 9;
-    // outer floor shelves
-    levels[2].platforms[0] = { {  30, 470}, {140, 15} };
-    levels[2].platforms[1] = { { 630, 470}, {140, 15} };
-    // inner dip
-    levels[2].platforms[2] = { { 200, 430}, {120, 15} };
-    levels[2].platforms[3] = { { 480, 430}, {120, 15} };
-    // centre floor rise
-    levels[2].platforms[4] = { { 310, 395}, {180, 15} };
-    // mid tier outer
-    levels[2].platforms[5] = { {  80, 305}, {160, 15} };
-    levels[2].platforms[6] = { { 560, 305}, {160, 15} };
-    // mid tier inner
-    levels[2].platforms[7] = { { 265, 220}, {270, 15} };
-    // top
-    levels[2].platforms[8] = { { 300, 130}, {200, 15} };
+    levels[2].platformCount = 16;
+    // upper 3
+    levels[2].platforms[0] = { { 160, 125}, {480, 50} };
+    levels[2].platforms[1] = { { 200, 220}, {390, 35} };
+
+    levels[2].platforms[2] = { { 160, 300}, {100, 130} };
+    levels[2].platforms[3] = { { 550, 300}, {100, 130} };
+
+    levels[2].platforms[4] = { {   0, 220}, {100, 35} };
+    levels[2].platforms[5] = { { 700, 220}, {100, 35} };
+
+    //lower three 
+    levels[2].platforms[6] = { { 350, 300}, {95, 50} };
+    levels[2].platforms[7] = { { 350, 390}, {95, 50} };
+
+    levels[2].platforms[8] = { {   0, 300}, { 50, 40} };
+    levels[2].platforms[9] = { {   0, 390}, { 50, 40} };
+
+    levels[2].platforms[10] = { { 750, 300}, { 50, 40} };
+    levels[2].platforms[11] = { { 750, 390}, { 50, 40} };
+
+    levels[2].platforms[12] = { { 250, 470}, { 300, 40} };
+    levels[2].platforms[13] = { {   0, 470}, { 150, 40} };
+    levels[2].platforms[14] = { {   650, 470}, { 150, 40} };
+    levels[2].platforms[15] = { {   0, 565}, { 800, 40} };
+
 
     levels[2].enemyCount = 5;
     levels[2].enemies[0] = { EnemyType::Botom,          {  50, 430} };
@@ -245,16 +258,22 @@ LevelManager::LevelManager()
         // Theme: Frozen Lake
         // =========================================================================
         levels[3].levelNumber = 4;
-    levels[3].platformCount = 9;
-    levels[3].platforms[0] = { {  60, 460}, {170, 15} };
-    levels[3].platforms[1] = { { 570, 460}, {170, 15} };
-    levels[3].platforms[2] = { { 200, 395}, {155, 15} };
-    levels[3].platforms[3] = { { 445, 395}, {155, 15} };
-    levels[3].platforms[4] = { {  60, 320}, {190, 15} };
-    levels[3].platforms[5] = { { 550, 320}, {190, 15} };
-    levels[3].platforms[6] = { { 255, 240}, {290, 15} };
-    levels[3].platforms[7] = { { 100, 160}, {170, 15} };
-    levels[3].platforms[8] = { { 530, 160}, {170, 15} };
+    levels[3].platformCount = 12;
+    levels[3].platforms[0] = { { 250, 125}, {450, 50} };
+    levels[3].platforms[1] = { { 650, 125}, {50, 220} };
+    levels[3].platforms[2] = { { 350, 300}, {350, 50} };
+
+    levels[3].platforms[3] = { { 100, 210}, {450, 50} };
+    levels[3].platforms[4] = { { 100, 210}, {50, 140} };
+    levels[3].platforms[5] = { { 100, 300}, {100, 50} };
+
+    levels[3].platforms[6] = { {   0, 390}, {350, 50} };
+    levels[3].platforms[7] = { {   0, 390}, {100, 140} };
+    levels[3].platforms[8] = { {   0, 480}, {350, 50} };
+
+    levels[3].platforms[9] = { { 450, 390}, {350, 50} };
+    levels[3].platforms[10] = { { 700, 390}, {100, 140} };
+    levels[3].platforms[11] = { { 450, 480}, {350, 50} };
 
     levels[3].enemyCount = 6;
     levels[3].enemies[0] = { EnemyType::Botom,   {  80, 420} };
@@ -273,10 +292,15 @@ LevelManager::LevelManager()
         // Theme: Dark Underground Lair
         // =========================================================================
         levels[4].levelNumber = 5;
-    levels[4].platformCount = 3;
-    levels[4].platforms[0] = { { 150, 420}, {500, 20} };   // main arena floor
-    levels[4].platforms[1] = { { 250, 280}, {300, 15} };   // upper shelf
-    levels[4].platforms[2] = { { 350, 160}, {100, 15} };   // top perch
+    levels[4].platformCount = 8;
+    levels[4].platforms[0] = { {   0, 200}, {350, 40} }; 
+    levels[4].platforms[1] = { { 160, 300}, {350, 40} }; 
+    levels[4].platforms[3] = { {   0, 390}, {350, 40} };   
+    levels[4].platforms[4] = { { 160, 470}, {300, 40} }; 
+    levels[4].platforms[5] = { { 550, 340}, {250, 40} };
+    levels[4].platforms[6] = { { 550, 390}, {250, 40} }; 
+    levels[4].platforms[7] = { {   0, 560}, {800, 40} }; 
+
 
     levels[4].enemyCount = 0;
     SET_FLAGS(4, true, false, false, false,
@@ -289,20 +313,29 @@ LevelManager::LevelManager()
         // Theme: Volcanic Wasteland
         // =========================================================================
         levels[5].levelNumber = 6;
-    levels[5].platformCount = 10;
+    levels[5].platformCount = 14;
     // main ascending staircase
-    levels[5].platforms[0] = { {  20, 490}, {120, 15} };
-    levels[5].platforms[1] = { {  90, 430}, {120, 15} };
-    levels[5].platforms[2] = { { 180, 370}, {120, 15} };
-    levels[5].platforms[3] = { { 290, 310}, {120, 15} };
-    levels[5].platforms[4] = { { 420, 250}, {120, 15} };
-    levels[5].platforms[5] = { { 560, 190}, {120, 15} };
-    // return lower staircase
-    levels[5].platforms[6] = { { 540, 380}, {110, 15} };
-    levels[5].platforms[7] = { { 410, 440}, {110, 15} };
-    levels[5].platforms[8] = { { 270, 490}, {110, 15} };
-    // small top perch
-    levels[5].platforms[9] = { { 340, 130}, {120, 15} };
+    levels[5].platforms[0] = { { 150, 130}, {490, 45} };
+    levels[5].platforms[1] = { { 300, 130}, {200, 80} };
+
+    levels[5].platforms[2] = { { 200, 305}, {150, 135} };
+    levels[5].platforms[3] = { { 450, 305}, {150, 135} };
+
+    levels[5].platforms[4] = { {   0, 215}, {200, 40} };
+    levels[5].platforms[5] = { { 600, 215}, {200, 40} };
+
+    levels[5].platforms[6] = { {   0, 300}, {100, 40} };
+    levels[5].platforms[7] = { { 700, 300}, {100, 40} };
+
+    levels[5].platforms[8] = { {   0, 390}, {100, 40} };
+    levels[5].platforms[9] = { { 700, 390}, {100, 40} };
+
+    levels[5].platforms[10] = { {   0, 480}, {100, 40} };
+    levels[5].platforms[11] = { { 700, 480}, {100, 40} };
+
+    levels[5].platforms[12] = { { 200, 480}, {400, 40} };
+    levels[5].platforms[13] = { {   0, 570}, {800, 35} };
+
 
     levels[5].enemyCount = 6;
     levels[5].enemies[0] = { EnemyType::Botom,          {  40, 450} };
@@ -322,19 +355,27 @@ LevelManager::LevelManager()
         // Theme: Haunted Castle
         // =========================================================================
         levels[6].levelNumber = 7;
-    levels[6].platformCount = 9;
+    levels[6].platformCount = 14;
     // top-left anchor
-    levels[6].platforms[0] = { {  20, 150}, {190, 15} };
-    // zigzag down
-    levels[6].platforms[1] = { { 590, 200}, {190, 15} };
-    levels[6].platforms[2] = { {  60, 270}, {175, 15} };
-    levels[6].platforms[3] = { { 565, 330}, {175, 15} };
-    levels[6].platforms[4] = { { 100, 395}, {190, 15} };
-    levels[6].platforms[5] = { { 510, 450}, {190, 15} };
-    // centre connector shelves
-    levels[6].platforms[6] = { { 250, 340}, {130, 15} };
-    levels[6].platforms[7] = { { 420, 270}, {130, 15} };
-    levels[6].platforms[8] = { { 300, 480}, {200, 15} };
+    levels[6].platforms[0] = { {   0, 130}, { 250, 40} };
+    levels[6].platforms[1] = { { 600, 220}, { 200, 40} };
+
+    levels[6].platforms[2] = { { 100, 300}, {200, 40} };
+    levels[6].platforms[3] = { { 350, 180}, {200, 40} };
+    levels[6].platforms[4] = { { 150, 220}, {250, 40} };
+
+    levels[6].platforms[5] = { { 100, 300}, {100, 40} };
+    levels[6].platforms[6] = { { 160, 350}, {150, 40} };
+    levels[6].platforms[7] = { { 250, 390}, {200, 40} };
+
+    levels[6].platforms[8] = { {   0, 440}, {150, 40} };
+    levels[6].platforms[9] = { { 100, 480}, {250, 40} };
+
+    levels[6].platforms[10] = { { 400, 300}, {250, 40} };
+    levels[6].platforms[11] = { { 600, 350}, {200, 40} };
+
+    levels[6].platforms[12] = { { 450, 480}, {250, 40} };
+    levels[6].platforms[13] = { { 650, 440}, {150, 40} };
 
     levels[6].enemyCount = 6;
     levels[6].enemies[0] = { EnemyType::Botom,          {  40, 110} };
@@ -354,23 +395,25 @@ LevelManager::LevelManager()
         // Theme: Alien Planet
         // =========================================================================
         levels[7].levelNumber = 8;
-    levels[7].platformCount = 10;
+    levels[7].platformCount = 12;
     // outer floor
-    levels[7].platforms[0] = { {  30, 490}, { 90, 15} };
-    levels[7].platforms[1] = { { 680, 490}, { 90, 15} };
-    // lower inner
-    levels[7].platforms[2] = { { 160, 450}, {200, 15} };
-    levels[7].platforms[3] = { { 440, 450}, {200, 15} };
-    // mid outer
-    levels[7].platforms[4] = { {  30, 360}, {150, 15} };
-    levels[7].platforms[5] = { { 620, 360}, {150, 15} };
-    // mid centre
-    levels[7].platforms[6] = { { 260, 310}, {280, 15} };
-    // upper outer
-    levels[7].platforms[7] = { { 100, 230}, {175, 15} };
-    levels[7].platforms[8] = { { 525, 230}, {175, 15} };
-    // top bridge
-    levels[7].platforms[9] = { { 290, 150}, {220, 15} };
+    levels[7].platforms[0] = { { 250, 170}, { 310, 80} };
+    levels[7].platforms[1] = { { 155, 215}, { 490, 40} };
+    
+    levels[7].platforms[2] = { {   0, 310}, {350, 40} };
+    levels[7].platforms[3] = { { 100, 390}, {250, 40} };
+    levels[7].platforms[4] = { { 300, 310}, {45, 125} };
+
+    levels[7].platforms[5] = { { 455, 310}, {335, 40} };
+    levels[7].platforms[6] = { { 455, 395}, {245, 40} };
+    levels[7].platforms[7] = { { 455, 310}, {45, 125} };
+
+    levels[7].platforms[8] = { {   0, 480}, {110, 40} };
+    levels[7].platforms[9] = { { 690, 480}, {110, 40} };
+
+    levels[7].platforms[10] = { { 210, 480}, {385, 40} };
+    levels[7].platforms[11] = { {   0, 565}, {790, 40} };
+
 
     levels[7].enemyCount = 7;
     levels[7].enemies[0] = { EnemyType::Botom,          {  50, 450} };
@@ -391,22 +434,30 @@ LevelManager::LevelManager()
         // Theme: Storm Clouds
         // =========================================================================
         levels[8].levelNumber = 9;
-    levels[8].platformCount = 10;
+    levels[8].platformCount = 16;
     // bottom narrow ledges
-    levels[8].platforms[0] = { {  40, 490}, { 80, 15} };
-    levels[8].platforms[1] = { { 680, 490}, { 80, 15} };
-    levels[8].platforms[2] = { { 180, 455}, { 95, 15} };
-    levels[8].platforms[3] = { { 525, 455}, { 95, 15} };
+    levels[8].platforms[0] = { { 205, 130}, { 395, 40} };
+    levels[8].platforms[1] = { { 205, 220}, { 395, 40} };
+    levels[8].platforms[2] = { { 200, 135}, { 100, 125} };
+    levels[8].platforms[3] = { { 500, 135}, { 100, 125} };
     // centre low
-    levels[8].platforms[4] = { { 330, 420}, {140, 15} };
-    // mid tier
-    levels[8].platforms[5] = { {  75, 330}, {115, 15} };
-    levels[8].platforms[6] = { { 610, 330}, {115, 15} };
+    levels[8].platforms[4] = { { 650, 390}, {150, 40} };
+    levels[8].platforms[5] = { { 450, 470}, {350, 40} };
+    levels[8].platforms[6] = { { 700, 390}, {100, 125} };
     // upper tier
-    levels[8].platforms[7] = { { 200, 245}, {150, 15} };
-    levels[8].platforms[8] = { { 450, 245}, {150, 15} };
+    levels[8].platforms[7] = { {   0, 390}, {150, 40} };
+    levels[8].platforms[8] = { {   0, 470}, {350, 40} };
+    levels[8].platforms[9] = { {   0, 390}, {100, 125} };
+
+    levels[8].platforms[10] = { {  0, 220}, {100, 125} };
+    levels[8].platforms[11] = { {  0, 305}, {345, 40} };
+    // upper tier
+    levels[8].platforms[12] = { { 700, 220}, {100, 125} };
+    levels[8].platforms[13] = { { 450, 300}, {350, 40} };
     // top single
-    levels[8].platforms[9] = { { 320, 155}, {160, 15} };
+    levels[8].platforms[14] = { { 245, 390}, {300, 40} };
+    levels[8].platforms[15] = { {   0, 560}, {800, 34} };
+
 
     levels[8].enemyCount = 8;
     levels[8].enemies[0] = { EnemyType::Botom,          {  60, 450} };
@@ -428,12 +479,13 @@ LevelManager::LevelManager()
         // Theme: Final Arena
         // =========================================================================
         levels[9].levelNumber = 10;
-    levels[9].platformCount = 5;
-    levels[9].platforms[0] = { { 100, 460}, {600, 20} };   // main arena floor
-    levels[9].platforms[1] = { {  30, 300}, {140, 15} };   // left tactical ledge
-    levels[9].platforms[2] = { { 630, 300}, {140, 15} };   // right tactical ledge
-    levels[9].platforms[3] = { { 200, 190}, {180, 15} };   // upper left
-    levels[9].platforms[4] = { { 420, 190}, {180, 15} };   // upper right
+    levels[9].platformCount = 6;
+    levels[9].platforms[0] = { { 100, 260}, {580, 40} };   // main arena floor
+    levels[9].platforms[1] = { {   0, 350}, {290, 30} };   // left tactical ledge
+    levels[9].platforms[2] = { { 495, 350}, {310, 30} };   // right tactical ledge
+    levels[9].platforms[3] = { { 100, 435}, { 90, 30} };   // upper left
+    levels[9].platforms[4] = { { 595, 435}, { 90, 30} };   // upper right
+    levels[9].platforms[5] = { {   0, 510}, {800, 85} };   // upper right
 
     levels[9].enemyCount = 0;
     SET_FLAGS(9, false, true, true, false,
@@ -458,12 +510,10 @@ bool LevelManager::isLastLevel() const
 {
     return currentLevel == totalLevels - 1;
 }
-
 //void LevelManager::drawBackground(sf::RenderWindow& window)
 //{
 //    backgroundSprite.setTexture(backgroundTextures[currentLevel]);
 //
-//    // scale to window
 //    sf::Vector2u textureSize = backgroundTextures[currentLevel].getSize();
 //    sf::Vector2u windowSize = window.getSize();
 //
@@ -476,40 +526,67 @@ bool LevelManager::isLastLevel() const
 //
 //    window.draw(backgroundSprite);
 //}
+// 
+
 void LevelManager::drawBackground(sf::RenderWindow& window)
 {
-    if (currentLevel == 0)
-    {
-        window.draw(level1Sprite);
-    }
+    //if (lastRenderedLevel != currentLevel)
+    //{
+    //    backgroundSprite.setTexture(backgroundTextures[currentLevel], true);
+    //    lastRenderedLevel = currentLevel;
+    //}
+    backgroundSprite.setTexture(backgroundTextures[currentLevel], true);
+    lastRenderedLevel = currentLevel;
+    sf::Vector2u textureSize = backgroundTextures[currentLevel].getSize();
+    sf::Vector2u windowSize = window.getSize();
+
+    backgroundSprite.setScale(
+        (float)windowSize.x / textureSize.x,
+        (float)windowSize.y / textureSize.y
+    );
+
+    backgroundSprite.setPosition(0.f, 0.f);
+
+    window.draw(backgroundSprite);
+    //if (backgroundTextures[currentLevel].getSize().x == 0) return; // skip if not loaded
+
+    //std::cout << "Drawing background for level " << currentLevel << " size: "
+    //    << backgroundTextures[currentLevel].getSize().x << "x"
+    //    << backgroundTextures[currentLevel].getSize().y << std::endl;
 }
-
-
-//
-//
-//void LevelManager::loadBackgrounds()
+//void LevelManager::drawBackground(sf::RenderWindow& window)
 //{
-//    for (int i = 0; i < totalLevels; i++)
+//    if (currentLevel == 0)
 //    {
-//        std::string path;
-//
-//        switch (levels[i].theme)
-//        {
-//        case LevelTheme::SnowyVillage:      path = "Default Levels / Default Levels / lvl1.png"; break;
-//        case LevelTheme::IceCave:           path = "Default Levels / Default Levels / lvl2.png"; break;
-//        case LevelTheme::WinterForest:      path = "Default Levels / Default Levels / lvl3.png"; break;
-//        case LevelTheme::FrozenLake:        path = "Default Levels / Default Levels / lvl4.png"; break;
-//        case LevelTheme::DarkLair:          path = "Default Levels / Default Levels / lvl5.png"; break;
-//        case LevelTheme::VolcanicWasteland: path = "Default Levels / Default Levels / lvl6.png"; break;
-//        case LevelTheme::HauntedCastle:     path = "Default Levels / Default Levels / lvl7.png"; break;
-//        case LevelTheme::AlienPlanet:       path = "Default Levels / Default Levels / lvl8.png"; break;
-//        case LevelTheme::StormClouds:       path = "Default Levels / Default Levels / lvl9.png"; break;
-//        case LevelTheme::FinalArena:        path = "Default Levels / Default Levels / lvl10.png"; break;
-//        }
-//
-//        if (!backgroundTextures[i].loadFromFile(path))
-//        {
-//            std::cout << "Failed to load: " << path << std::endl;
-//        }
+//        window.draw(level1Sprite);
 //    }
 //}
+
+
+
+void LevelManager::loadBackgrounds()
+{
+    for (int i = 0; i < totalLevels; i++)
+    {
+        std::string path;
+
+        switch (levels[i].theme)
+        {
+        case LevelTheme::SnowyVillage:      path = "C:/Users/Amal Asif/Downloads/SFML_VS_Setup_2026 (1)/SFML_VS_Setup_2026/SFML_VS_Setup_2026/Default Levels/Default Levels/lvl1.png"; break;
+        case LevelTheme::IceCave:           path = "C:/Users/Amal Asif/Downloads/SFML_VS_Setup_2026 (1)/SFML_VS_Setup_2026/SFML_VS_Setup_2026/Default Levels/Default Levels/lvl2.png"; break;
+        case LevelTheme::WinterForest:      path = "C:/Users/Amal Asif/Downloads/SFML_VS_Setup_2026 (1)/SFML_VS_Setup_2026/SFML_VS_Setup_2026/Default Levels/Default Levels/lvl3.png"; break;
+        case LevelTheme::FrozenLake:        path = "C:/Users/Amal Asif/Downloads/SFML_VS_Setup_2026 (1)/SFML_VS_Setup_2026/SFML_VS_Setup_2026/Default Levels/Default Levels/lvl4.png"; break;
+        case LevelTheme::DarkLair:          path = "C:/Users/Amal Asif/Downloads/SFML_VS_Setup_2026 (1)/SFML_VS_Setup_2026/SFML_VS_Setup_2026/Default Levels/Default Levels/lvl10.png"; break;
+        case LevelTheme::VolcanicWasteland: path = "C:/Users/Amal Asif/Downloads/SFML_VS_Setup_2026 (1)/SFML_VS_Setup_2026/SFML_VS_Setup_2026/Default Levels/Default Levels/lvl6.png"; break;
+        case LevelTheme::HauntedCastle:     path = "C:/Users/Amal Asif/Downloads/SFML_VS_Setup_2026 (1)/SFML_VS_Setup_2026/SFML_VS_Setup_2026/Default Levels/Default Levels/lvl7.png"; break;
+        case LevelTheme::AlienPlanet:       path = "C:/Users/Amal Asif/Downloads/SFML_VS_Setup_2026 (1)/SFML_VS_Setup_2026/SFML_VS_Setup_2026/Default Levels/Default Levels/lvl8.png"; break;
+        case LevelTheme::StormClouds:       path = "C:/Users/Amal Asif/Downloads/SFML_VS_Setup_2026 (1)/SFML_VS_Setup_2026/SFML_VS_Setup_2026/Default Levels/Default Levels/lvl9.png"; break;
+        case LevelTheme::FinalArena:        path = "C:/Users/Amal Asif/Downloads/SFML_VS_Setup_2026 (1)/SFML_VS_Setup_2026/SFML_VS_Setup_2026/Default Levels/Default Levels/lvl20.png"; break;
+        }
+
+        if (!backgroundTextures[i].loadFromFile(path))
+        {
+            std::cout << "Failed to load: " << path << std::endl;
+        }
+    }
+}

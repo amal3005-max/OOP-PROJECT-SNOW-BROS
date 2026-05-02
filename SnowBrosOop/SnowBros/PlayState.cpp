@@ -845,14 +845,42 @@ void PlayState::update(float deltaTime)
             enemies[e]->update(deltaTime);
 
     // ── Snowball vs regular enemies ──────────────────────────────────────────
+    //for (int e = 0; e < enemyCount; )
+    //{
+    //    if (!enemies[e]) { ++e; continue; }
+
+    //    for (int i = 0; i < snowballCount; )
+    //    {
+    //        if (!snowballs[i]) { ++i; continue; }
+
+    //        if (snowballs[i]->getBounds().intersects(enemies[e]->getBounds()))
+    //        {
+    //            enemies[e]->hitBySnowball(1.0f);
+    //            delete snowballs[i];
+    //            snowballs[i] = snowballs[--snowballCount];
+    //            snowballs[snowballCount] = nullptr;
+    //        }
+    //        else ++i;
+    //    }
+
+    //    if (!enemies[e]->isAlive())
+    //        removeEnemy(e);
+    //    else
+    //        ++e;
+    //}
+
+
+    // ── Snowball vs regular enemies ──────────────────────────────────────────────
     for (int e = 0; e < enemyCount; )
     {
         if (!enemies[e]) { ++e; continue; }
 
+        // ── FIX: skip bosses — they have their own death handlers below ──
+        if (enemies[e] == mogera || enemies[e] == gamakichi) { ++e; continue; }
+
         for (int i = 0; i < snowballCount; )
         {
             if (!snowballs[i]) { ++i; continue; }
-
             if (snowballs[i]->getBounds().intersects(enemies[e]->getBounds()))
             {
                 enemies[e]->hitBySnowball(1.0f);
@@ -870,6 +898,69 @@ void PlayState::update(float deltaTime)
     }
 
     // ── Snowball vs Mogera boss ──────────────────────────────────────────────
+    //if (mogera)
+    //{
+    //    //for (int i = 0; i < snowballCount; )
+    //    //{
+    //    //    if (!snowballs[i]) { ++i; continue; }
+    //    //    if (snowballs[i]->getBounds().intersects(mogera->getBounds()))
+    //    //    {
+    //    //        mogera->hitBySnowball(1.0f);
+    //    //        delete snowballs[i];
+    //    //        snowballs[i] = snowballs[--snowballCount];
+    //    //        snowballs[snowballCount] = nullptr;
+    //    //    }
+    //    //    else ++i;
+    //    //}
+    //    //if (!mogera->isAlive()) { delete mogera; mogera = nullptr; }
+
+
+
+    //    // Snowball hits
+    //    for (int i = 0; i < snowballCount; )
+    //    {
+    //        if (!snowballs[i]) { ++i; continue; }
+    //        if (snowballs[i]->getBounds().intersects(mogera->getBounds()))
+    //        {
+    //            mogera->hitBySnowball(1.0f);
+    //            delete snowballs[i];
+    //            snowballs[i] = snowballs[--snowballCount];
+    //            snowballs[snowballCount] = nullptr;
+    //        }
+    //        else ++i;
+    //    }
+
+    //    if (!mogera->isAlive())
+    //    {
+    //        // Remove ALL MogeraChildren first
+    //        for (int e = enemyCount - 1; e >= 0; --e)
+    //        {
+    //            if (dynamic_cast<MogeraChild*>(enemies[e]))
+    //            {
+    //                delete enemies[e];
+    //                enemies[e] = enemies[--enemyCount];
+    //                enemies[enemyCount] = nullptr;
+    //            }
+    //        }
+
+    //        // Now find and remove Mogera from enemies[] array
+    //        for (int e = 0; e < enemyCount; e++)
+    //        {
+    //            if (enemies[e] == mogera)
+    //            {
+    //                // Don't delete here - mogera pointer handles that
+    //                enemies[e] = enemies[--enemyCount];
+    //                enemies[enemyCount] = nullptr;
+    //                break;
+    //            }
+    //        }
+
+    //        // Delete the boss
+    //        delete mogera;
+    //        mogera = nullptr;
+    //    }
+    //}
+
     if (mogera)
     {
         for (int i = 0; i < snowballCount; )
@@ -884,31 +975,83 @@ void PlayState::update(float deltaTime)
             }
             else ++i;
         }
-        if (!mogera->isAlive()) { delete mogera; mogera = nullptr; }
+
+        if (!mogera->isAlive())
+        {
+            // Remove MogeraChildren from enemies[]
+            for (int e = enemyCount - 1; e >= 0; --e)
+            {
+                if (dynamic_cast<MogeraChild*>(enemies[e]))
+                {
+                    delete enemies[e];
+                    enemies[e] = enemies[--enemyCount];
+                    enemies[enemyCount] = nullptr;
+                }
+            }
+
+            // Remove mogera from enemies[] array (DO NOT delete here)
+            for (int e = 0; e < enemyCount; e++)
+            {
+                if (enemies[e] == mogera)
+                {
+                    enemies[e] = enemies[--enemyCount];
+                    enemies[enemyCount] = nullptr;
+                    break;
+                }
+            }
+
+            delete mogera;   // only deleted ONCE here
+            mogera = nullptr;
+
+            // ── FIX: advance to next level when boss dies ──
+            if (!levelManager.isLastLevel())
+            {
+                levelManager.nextLevel();
+                loadLevel();
+            }
+        }
     }
+
+
 
     // ── Snowball vs Gamakichi boss ───────────────────────────────────────────
-    if (gamakichi)
-    {
-        for (int i = 0; i < snowballCount; )
-        {
-            if (!snowballs[i]) { ++i; continue; }
-            if (snowballs[i]->getBounds().intersects(gamakichi->getBounds()))
-            {
-                gamakichi->hitBySnowball(1.0f);
-                delete snowballs[i];
-                snowballs[i] = snowballs[--snowballCount];
-                snowballs[snowballCount] = nullptr;
-            }
-            else ++i;
-        }
-        if (!gamakichi->isAlive()) { delete gamakichi; gamakichi = nullptr; }
-    }
+    //if (gamakichi)
+    //{
+    //    for (int i = 0; i < snowballCount; )
+    //    {
+    //        if (!snowballs[i]) { ++i; continue; }
+    //        if (snowballs[i]->getBounds().intersects(gamakichi->getBounds()))
+    //        {
+    //            gamakichi->hitBySnowball(1.0f);
+    //            delete snowballs[i];
+    //            snowballs[i] = snowballs[--snowballCount];
+    //            snowballs[snowballCount] = nullptr;
+    //        }
+    //        else ++i;
+    //    }
+    //    if (!gamakichi->isAlive()) { delete gamakichi; gamakichi = nullptr; }
+    //}
 
     // ── Enemy touch damage ───────────────────────────────────────────────────
+    //for (int e = 0; e < enemyCount; ++e)
+    //{
+    //    if (!enemies[e] || enemies[e]->isPushable()) continue;
+
+    //    if (!player1.isInvincible &&
+    //        enemies[e]->getBounds().intersects(player1.getBounds()))
+    //        if (player1.loseLife()) gameOver = true;
+
+    //    if (player2 && !player2->isInvincible &&
+    //        enemies[e]->getBounds().intersects(player2->getBounds()))
+    //        if (player2->loseLife()) gameOver = true;
+    //}
+
+    // ── Enemy touch damage ───────────────────────────────────────────────────────
     for (int e = 0; e < enemyCount; ++e)
     {
-        if (!enemies[e] || enemies[e]->isPushable()) continue;
+        if (!enemies[e]) continue;
+        if (enemies[e]->isPushable()) continue;
+        if (enemies[e] == mogera || enemies[e] == gamakichi) continue; // ← FIX
 
         if (!player1.isInvincible &&
             enemies[e]->getBounds().intersects(player1.getBounds()))
@@ -987,35 +1130,125 @@ void PlayState::update(float deltaTime)
     }
 
     // ── MOGERA boss update + child spawning ──────────────────────────────────
+    //if (mogera)
+    //{
+    //    mogera->update(deltaTime);
+
+    //    sf::FloatRect pb = player1.getBounds();
+    //    sf::Vector2f  playerCentre(pb.left + pb.width / 2.f, pb.top + pb.height / 2.f);
+
+    //    MogeraChild* child = mogera->trySpawnChild(playerCentre);
+    //    if (child)
+    //    {
+    //        if (enemyCount < MAX_ENEMIES)
+    //            enemies[enemyCount++] = child;
+    //        else
+    //            delete child;
+    //    }
+    //}
+
     if (mogera)
     {
         mogera->update(deltaTime);
 
-        sf::FloatRect pb = player1.getBounds();
-        sf::Vector2f  playerCentre(pb.left + pb.width / 2.f, pb.top + pb.height / 2.f);
-
-        MogeraChild* child = mogera->trySpawnChild(playerCentre);
-        if (child)
-        {
-            if (enemyCount < MAX_ENEMIES)
-                enemies[enemyCount++] = child;
-            else
-                delete child;
-        }
+            sf::FloatRect pb = player1.getBounds();
+            sf::Vector2f  playerCentre(pb.left + pb.width / 2.f, pb.top + pb.height / 2.f);
+        
+            MogeraChild* child = mogera->trySpawnChild(playerCentre);
+            if (child)
+            {
+                if (enemyCount < MAX_ENEMIES)
+                    enemies[enemyCount++] = child;
+                else
+                    delete child;
+            }
+        
     }
 
     // ── GAMAKICHI boss update + child spawning ───────────────────────────────
     // NOTE: update() is called ONCE here.  fireCannons() is also called once.
     // The boss's internal cannon timers are advanced inside fireCannons(),
     // so do NOT call update() again after this block.
+    //if (gamakichi)
+    //{
+    //    gamakichi->update(deltaTime);
+
+    //    // Array for newly spawned children (max 6 cannons can fire per frame)
+    //    GamakichiChild* kids[6];
+    //    int kidCount = 0;
+
+    //    gamakichi->fireCannons(deltaTime, kids, kidCount);
+
+    //    for (int i = 0; i < kidCount; i++)
+    //    {
+    //        if (enemyCount < MAX_ENEMIES)
+    //            enemies[enemyCount++] = kids[i];
+    //        else
+    //            delete kids[i];   // pool full — avoid leak
+    //    }
+    //}
+
+    //if (gamakichi)
+    //{
+    //    gamakichi->update(deltaTime);
+
+    //        // Array for newly spawned children (max 6 cannons can fire per frame)
+    //        GamakichiChild* kids[6];
+    //        int kidCount = 0;
+    //    
+    //        gamakichi->fireCannons(deltaTime, kids, kidCount);
+    //    
+    //    // Snowball hits
+    //    for (int i = 0; i < snowballCount; )
+    //    {
+    //        if (!snowballs[i]) { ++i; continue; }
+    //        if (snowballs[i]->getBounds().intersects(gamakichi->getBounds()))
+    //        {
+    //            gamakichi->hitBySnowball(1.0f);
+    //            delete snowballs[i];
+    //            snowballs[i] = snowballs[--snowballCount];
+    //            snowballs[snowballCount] = nullptr;
+    //        }
+    //        else ++i;
+    //    }
+
+    //    if (!gamakichi->isAlive())
+    //    {
+    //        // Remove ALL GamakichiChildren first
+    //        for (int e = enemyCount - 1; e >= 0; --e)
+    //        {
+    //            if (dynamic_cast<GamakichiChild*>(enemies[e]))
+    //            {
+    //                delete enemies[e];
+    //                enemies[e] = enemies[--enemyCount];
+    //                enemies[enemyCount] = nullptr;
+    //            }
+    //        }
+
+    //        // Find and remove Gamakichi from enemies[] array
+    //        for (int e = 0; e < enemyCount; e++)
+    //        {
+    //            if (enemies[e] == gamakichi)
+    //            {
+    //                enemies[e] = enemies[--enemyCount];
+    //                enemies[enemyCount] = nullptr;
+    //                break;
+    //            }
+    //        }
+
+    //        // Delete the boss
+    //        delete gamakichi;
+    //        gamakichi = nullptr;
+    //    }
+    //}
+    // ── GAMAKICHI boss update + child spawning ────────────────────────────────────
     if (gamakichi)
     {
         gamakichi->update(deltaTime);
 
-        // Array for newly spawned children (max 6 cannons can fire per frame)
+        // Fire cannons — spawns GamakichiChildren
         GamakichiChild* kids[6];
         int kidCount = 0;
-
         gamakichi->fireCannons(deltaTime, kids, kidCount);
 
         for (int i = 0; i < kidCount; i++)
@@ -1023,7 +1256,51 @@ void PlayState::update(float deltaTime)
             if (enemyCount < MAX_ENEMIES)
                 enemies[enemyCount++] = kids[i];
             else
-                delete kids[i];   // pool full — avoid leak
+                delete kids[i];
+        }
+
+        // Snowball hits on Gamakichi
+        for (int i = 0; i < snowballCount; )
+        {
+            if (!snowballs[i]) { ++i; continue; }
+            if (snowballs[i]->getBounds().intersects(gamakichi->getBounds()))
+            {
+                gamakichi->hitBySnowball(1.0f);
+                delete snowballs[i];
+                snowballs[i] = snowballs[--snowballCount];
+                snowballs[snowballCount] = nullptr;
+            }
+            else ++i;
+        }
+
+        // ← FIX: one clean death handler, no double-delete
+        if (!gamakichi->isAlive())
+        {
+            // Step 1: delete all GamakichiChildren from enemies[]
+            for (int e = enemyCount - 1; e >= 0; --e)
+            {
+                if (dynamic_cast<GamakichiChild*>(enemies[e]))
+                {
+                    delete enemies[e];
+                    enemies[e] = enemies[--enemyCount];
+                    enemies[enemyCount] = nullptr;
+                }
+            }
+
+            // Step 2: remove gamakichi from enemies[] WITHOUT deleting
+            for (int e = 0; e < enemyCount; e++)
+            {
+                if (enemies[e] == gamakichi)
+                {
+                    enemies[e] = enemies[--enemyCount];
+                    enemies[enemyCount] = nullptr;
+                    break;
+                }
+            }
+
+            // Step 3: now safe to delete — only happens once
+            delete gamakichi;
+            gamakichi = nullptr;
         }
     }
 
@@ -1039,12 +1316,20 @@ void PlayState::update(float deltaTime)
         livesText2.setString("P2 Lives: " + std::to_string(player2->getLives()));
 
     //if (enemyCount == 0 && !mogera && !gamakichi)
-    if (enemyCount == 0)
-    {
-        levelManager.nextLevel();
-        loadLevel();
-    }
+    //if (enemyCount == 0)
+    //{
+    //    levelManager.nextLevel();
+    //    loadLevel();
+    //}
 
+    if (enemyCount == 0 && !gameOver)
+    {
+        if (!levelManager.isLastLevel())
+        {
+            levelManager.nextLevel();
+            loadLevel();
+        }
+    }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -1092,8 +1377,22 @@ void PlayState::spawnKnife(sf::Vector2f pos, sf::Vector2f dir)
     if (projectileCount < MAX_PROJECTILES)
         projectiles[projectileCount++] = new Knife(pos, dir);
 }
+
 void PlayState::loadLevel()
 {
+    gameOver = false;
+    // Clear enemies
+    for (int i = 0; i < enemyCount; i++)
+    {
+        delete enemies[i];
+        enemies[i] = nullptr;
+    }
+    enemyCount = 0;
+    levelManager.loadBackgrounds();
+    // Reset boss pointers FIRST
+    mogera = nullptr;
+    gamakichi = nullptr;
+
     LevelConfig& lvl = levelManager.getCurrentLevel();
 
     // ---------------- PLATFORMS ----------------
@@ -1102,43 +1401,102 @@ void PlayState::loadLevel()
     {
         platforms[i].setSize(lvl.platforms[i].size);
         platforms[i].setPosition(lvl.platforms[i].position);
-        platforms[i].setFillColor(sf::Color(255, 255, 255, 0));
+        platforms[i].setFillColor(sf::Color(255, 255, 255 ));
     }
 
     // ---------------- ENEMIES ----------------
-    enemyCount = 0;
-
     for (int i = 0; i < lvl.enemyCount; i++)
     {
         EnemySpawn& e = lvl.enemies[i];
 
         if (e.type == EnemyType::Botom)
-        {
             enemies[enemyCount++] = new Botom(e.position);
-        }
         else if (e.type == EnemyType::FlyingFoogaFog)
-        {
             enemies[enemyCount++] = new FlyingFooga(e.position);
-        }
         else if (e.type == EnemyType::Tornado)
-        {
             enemies[enemyCount++] = new Tornado(e.position);
-        }
     }
 
     // ---------------- BOSSES ----------------
     if (lvl.hasMogera)
     {
-        enemies[enemyCount++] = new Mogera(sf::Vector2f(400, 200));
+        mogera = new Mogera(sf::Vector2f(570, 135));
+        enemies[enemyCount++] = mogera;  // ← SAME pointer as member
     }
 
     if (lvl.hasGamakichi)
     {
-        enemies[enemyCount++] = new Gamakichi(sf::Vector2f(400, 150));
+        gamakichi = new Gamakichi(sf::Vector2f(200, 310));
+        enemies[enemyCount++] = gamakichi;  // ← SAME pointer as member
     }
-
-
 }
+//void PlayState::loadLevel()
+//{
+//
+//    mogera = nullptr;
+//    gamakichi = nullptr;
+//    LevelConfig& lvl = levelManager.getCurrentLevel();
+//	levelManager.loadBackgrounds();
+//
+//    // ---------------- PLATFORMS ----------------
+//    platformCount = lvl.platformCount;
+//    for (int i = 0; i < platformCount; i++)
+//    {
+//        platforms[i].setSize(lvl.platforms[i].size);
+//        platforms[i].setPosition(lvl.platforms[i].position);
+//        platforms[i].setFillColor(sf::Color(255, 255, 255 ));
+//    }
+//
+//    // ---------------- ENEMIES ----------------
+//
+//    for (int i = 0; i < enemyCount; i++)
+//    {
+//        delete enemies[i];
+//        enemies[i] = nullptr;
+//    }
+//    enemyCount = 0;
+//    //enemyCount = 0;
+//
+//    for (int i = 0; i < lvl.enemyCount; i++)
+//    {
+//        EnemySpawn& e = lvl.enemies[i];
+//
+//        if (e.type == EnemyType::Botom)
+//        {
+//            enemies[enemyCount++] = new Botom(e.position);
+//        }
+//        else if (e.type == EnemyType::FlyingFoogaFog)
+//        {
+//            enemies[enemyCount++] = new FlyingFooga(e.position);
+//        }
+//        else if (e.type == EnemyType::Tornado)
+//        {
+//            enemies[enemyCount++] = new Tornado(e.position);
+//        }
+//    }
+//
+//    // ---------------- BOSSES ----------------
+//    //if (lvl.hasMogera)
+//    //{
+//    //    enemies[enemyCount++] = new Mogera(sf::Vector2f(400, 200));
+//    //}
+//
+//    //if (lvl.hasGamakichi)
+//    //{
+//    //    enemies[enemyCount++] = new Gamakichi(sf::Vector2f(400, 150));
+//    //}
+//
+//    if (lvl.hasMogera)
+//    {
+//        mogera = new Mogera(sf::Vector2f(570, 115));
+//        enemies[enemyCount++] = mogera;
+//    }
+//    if (lvl.hasGamakichi)
+//    {
+//        gamakichi = new Gamakichi(sf::Vector2f(400, 150));
+//        enemies[enemyCount++] = gamakichi;
+//    }
+//}
 
 
 //void PlayState::loadLevel()

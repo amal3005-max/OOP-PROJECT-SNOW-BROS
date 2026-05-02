@@ -21,7 +21,7 @@ private:
     Player player1;
     Player* player2;
 
-	static const int MAX_ENEMIES = 20;
+	static const int MAX_ENEMIES = 50;
     Enemy* enemies[MAX_ENEMIES];
 	int enemyCount;
 
@@ -29,7 +29,7 @@ private:
     Gamakichi* gamakichi = nullptr;
 
     LevelManager levelManager;
-    sf::RectangleShape platforms[10];
+    sf::RectangleShape platforms[20];
     int platformCount;
 
     bool debugMode;
