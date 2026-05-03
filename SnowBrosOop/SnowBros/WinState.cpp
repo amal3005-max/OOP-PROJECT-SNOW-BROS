@@ -1,21 +1,15 @@
-// WinState.cpp
 #include "WinState.h"
 #include "MenuState.h"
 #include "PlayState.h"
 #include <cstdlib>
 #include <sstream>
 
-WinState::WinState(StateManager& manager,
-    int score, int enemies, int levels)
-    : State(manager),
-    finalScore(score),
-    enemiesDefeated(enemies),
-    levelsCleared(levels),
-    promptVisible(true)
+WinState::WinState(StateManager& manager, int score, int enemies, int levels)
+    : State(manager), finalScore(score), enemiesDefeated(enemies), levelsCleared(levels), promptVisible(true)
 {
     font.loadFromFile("ARCADE.otf");
 
-    // ── CONGRATS title ──
+    // CONGRATS title
     congratsText.setFont(font);
     congratsText.setString("CONGRATULATIONS!");
     congratsText.setCharacterSize(42);
@@ -23,7 +17,7 @@ WinState::WinState(StateManager& manager,
     float cx = (800.f - congratsText.getGlobalBounds().width) / 2.f;
     congratsText.setPosition(cx, 40.f);
 
-    // ── Subtitle ──
+    //Subtitle
     subtitleText.setFont(font);
     subtitleText.setString("YOU SAVED THE KINGDOM!");
     subtitleText.setCharacterSize(24);
@@ -31,7 +25,7 @@ WinState::WinState(StateManager& manager,
     float sx = (800.f - subtitleText.getGlobalBounds().width) / 2.f;
     subtitleText.setPosition(sx, 100.f);
 
-    // ── Story ──
+    //Story
     storyText.setFont(font);
     storyText.setString(
         "Nick and Tom defeated all enemies\n"
@@ -42,7 +36,7 @@ WinState::WinState(StateManager& manager,
     float stx = (800.f - storyText.getGlobalBounds().width) / 2.f;
     storyText.setPosition(stx, 160.f);
 
-    // ── Stats ──
+    // Stats
     std::ostringstream ss;
     ss << "LEVELS CLEARED :  " << levelsCleared << "\n"
         << "ENEMIES DEFEATED: " << enemiesDefeated << "\n"
@@ -55,7 +49,7 @@ WinState::WinState(StateManager& manager,
     float stsx = (800.f - statsText.getGlobalBounds().width) / 2.f;
     statsText.setPosition(stsx, 280.f);
 
-    // ── Blink prompt ──
+    // Blink prompt
     promptText.setFont(font);
     promptText.setString("PRESS ENTER TO PLAY AGAIN");
     promptText.setCharacterSize(20);
@@ -63,7 +57,7 @@ WinState::WinState(StateManager& manager,
     float px = (800.f - promptText.getGlobalBounds().width) / 2.f;
     promptText.setPosition(px, 430.f);
 
-    // ── Menu prompt ──
+    // Menu prompt
     menuText.setFont(font);
     menuText.setString("PRESS M FOR MAIN MENU");
     menuText.setCharacterSize(18);
@@ -71,7 +65,7 @@ WinState::WinState(StateManager& manager,
     float mx = (800.f - menuText.getGlobalBounds().width) / 2.f;
     menuText.setPosition(mx, 470.f);
 
-    // ── Snowflakes ──
+    // Snowflakes
     for (int i = 0; i < NUM_FLAKES; i++)
     {
         snowflakes[i].shape.setRadius(3.f + (rand() % 4));
@@ -95,8 +89,6 @@ void WinState::handleInput(sf::Event& event)
 
         if (event.key.code == sf::Keyboard::Escape)
         {
-            // close window — get window ref via manager if you have it,
-            // or just go to menu as fallback
             manager.changeState(new MenuState(manager));
         }
     }
@@ -104,21 +96,21 @@ void WinState::handleInput(sf::Event& event)
 
 void WinState::update(float dt)
 {
-    // ── Blink prompt ──
+    // Blink prompt
     if (blinkClock.getElapsedTime().asSeconds() > 0.5f)
     {
         promptVisible = !promptVisible;
         blinkClock.restart();
     }
 
-    // ── Cycle title color ──
+    //Cycle title color
     float t = colorClock.getElapsedTime().asSeconds();
     int r = static_cast<int>(128 + 127 * std::sin(t * 2.0f));
     int g = static_cast<int>(128 + 127 * std::sin(t * 2.0f + 2.094f));
     int b = static_cast<int>(128 + 127 * std::sin(t * 2.0f + 4.189f));
     congratsText.setFillColor(sf::Color(r, g, b));
 
-    // ── Move snowflakes ──
+    // Move snowflakes
     for (int i = 0; i < NUM_FLAKES; i++)
     {
         snowflakes[i].shape.move(0.f, snowflakes[i].speed * dt);
@@ -134,7 +126,7 @@ void WinState::update(float dt)
 
 void WinState::render(sf::RenderWindow& window)
 {
-    // Dark night-sky background
+    // Dark night sky background
     window.clear(sf::Color(10, 10, 60));
 
     // Snowflakes behind everything

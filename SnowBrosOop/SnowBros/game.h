@@ -17,5 +17,4 @@ private:
 public:
     Game();
     void run();
-    //SoundManager& getSoundManager() { return soundManager; }  // ← ADD THIS
 };

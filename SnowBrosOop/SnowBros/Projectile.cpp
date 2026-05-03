@@ -1,14 +1,4 @@
 #include "Projectile.h"
-//bool Projectile::isVisible() const
-//{
-//	return visible;
-//}
-//float Projectile:: getDamage() const
-//{
-//	return damage;
-//}
-
-#include "Projectile.h"
 
 Projectile::Projectile(sf::Vector2f position, sf::Vector2f velocity, float damage, bool firedbyenemy)
 {

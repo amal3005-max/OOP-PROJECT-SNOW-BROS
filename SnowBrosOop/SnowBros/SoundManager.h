@@ -86,7 +86,6 @@ public:
     void setVolume(float v) { music.setVolume(v); }
 };
 
-// Global instance — accessible from any .cpp that includes this header
 inline SoundManager& gSound()
 {
     static SoundManager instance;

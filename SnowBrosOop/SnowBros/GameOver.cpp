@@ -30,10 +30,12 @@ void GameOverState::handleInput(sf::Event& event)
     {
         if (event.key.code == sf::Keyboard::R)
         {
+            //manager.getSound()->play("SnowBrosAssets/Sounds/snow_bros_level.ogg");
             manager.changeState(new PlayState(manager));
         }
         else if (event.key.code == sf::Keyboard::M)
         {
+            //manager.getSound()->play("SnowBrosAssets/Sounds/snow_bros_level.ogg");
             manager.changeState(new MenuState(manager));
         }
     }

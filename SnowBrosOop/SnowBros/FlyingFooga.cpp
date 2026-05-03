@@ -18,7 +18,6 @@ void FlyingFooga::update(float dt)
 {
     if (!isFlying)
     {
-        // behave exactly like Botom
         Botom::update(dt);
 
         groundTimer += dt;
@@ -39,7 +38,7 @@ void FlyingFooga::update(float dt)
 
             flightDir = sf::Vector2f((float)rx, (float)ry);
 
-            // normalize direction (important)
+            // normalize direction 
             float len = sqrt(flightDir.x * flightDir.x + flightDir.y * flightDir.y);
             flightDir.x /= len;
             flightDir.y /= len;
@@ -48,7 +47,6 @@ void FlyingFooga::update(float dt)
     else
     {
         // FLIGHT MODE
-
         velocity = flightDir * speed * flightSpeedMultiplier;
 
         body.move(velocity * dt);
@@ -65,7 +63,7 @@ void FlyingFooga::update(float dt)
             velocity = sf::Vector2f(0.f, 0.f);
         }
 
-        // screen bounds clamp (important)
+        // screen bounds 
         sf::Vector2f pos = body.getPosition();
 
         if (pos.x < 0) pos.x = 0;
@@ -96,6 +94,4 @@ void FlyingFooga::draw(sf::RenderWindow& window, bool debugMode)
         window.draw(box);
     }
 }
-
-
 

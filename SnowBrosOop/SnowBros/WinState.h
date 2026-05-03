@@ -14,16 +14,13 @@ private:
     sf::Text promptText;
     sf::Text menuText;
 
-    // Stats passed in from PlayState
     int finalScore;
     int enemiesDefeated;
     int levelsCleared;
 
-    // Blinking
     sf::Clock blinkClock;
     bool promptVisible;
 
-    // Snowflakes
     struct Snowflake
     {
         sf::CircleShape shape;
@@ -33,7 +30,6 @@ private:
     static const int NUM_FLAKES = 40;
     Snowflake snowflakes[NUM_FLAKES];
 
-    // Title color cycle
     sf::Clock colorClock;
 
 public:

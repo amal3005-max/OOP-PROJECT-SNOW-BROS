@@ -25,12 +25,8 @@ private:
 public:
     LogoState(StateManager& manager) : State(manager), game(game)
     {
-        // load image and font
         logoTexture.loadFromFile("logo2.png");
         font.loadFromFile("ARCADE.otf");
-        // Inside LogoState constructor, after loading font — ADD:
-        //game.getSoundManager().play("snow_bros_theme_01.ogg");
-
         logoSprite.setTexture(logoTexture);
 
         // center logo
@@ -64,8 +60,6 @@ public:
         float copy2X = (800 - copyright2.getGlobalBounds().width) / 2;
         copyright2.setPosition(copy2X, 530);
 
-        //game.getSoundManager().play("snow_bros_theme_01.ogg");
-        //manager.getSoundManager().play("snow_bros_theme_01.ogg");
         gSound().play("SnowBrosAssets/Sounds/snow_bros_theme_01.ogg");
     }
 
@@ -76,7 +70,6 @@ public:
             if (event.key.code == sf::Keyboard::Enter)
             {
                 gSound().play("SnowBrosAssets/Sounds/snow_bros_theme_02.ogg");
-                //game.getSoundManager().play("snow_bros_theme_02.ogg");
                 manager.changeState(new MenuState(manager));
             }
         }
@@ -114,9 +107,7 @@ public:
 
 Game::Game() : window(sf::VideoMode(800, 600), "Snow Bros Game")
 {
-    //stateManager.setSoundManager(&soundManager);
     stateManager.changeState(new LogoState(stateManager));
-    
 }
 
 void Game::run()

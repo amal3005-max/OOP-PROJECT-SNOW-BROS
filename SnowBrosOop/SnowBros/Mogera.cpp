@@ -4,12 +4,11 @@
 Mogera::Mogera(sf::Vector2f p)
     : SimpleEnemy(EnemyType::Mogera, 0.f, p)
 {
-    health = 1000;           // requires multiple hits
+    health = 1000;  
     spawnTimer = 0.f;
-    spawnInterval = 3.f;   // spawn a child every 3 seconds
+    spawnInterval = 3.f; 
     pushable = false;
 
-    // Set large boss body
     body.setSize(sf::Vector2f(200.f, 200.f));
     body.setFillColor(sf::Color::White);
     body.setPosition(p);
@@ -38,10 +37,7 @@ MogeraChild* Mogera::trySpawnChild(sf::Vector2f playerPosition)
 
 void Mogera::update(float dt)
 {
-    // Advance spawn timer — trySpawnChild() checks it from PlayState
     spawnTimer += dt;
-
-    // Mogera is stationary; call base only for snowball-coat colour logic
     SimpleEnemy::update(dt);
 }
 
@@ -50,7 +46,7 @@ void Mogera::draw(sf::RenderWindow& window, bool debugMode)
     // Boss body
     window.draw(body);
 
-    // Health bar — grey background + red foreground
+    // Health bar 
     float barW = body.getSize().x;
     float fraction = static_cast<float>(health) / 1000.f;
     if (fraction < 0.f) fraction = 0.f;

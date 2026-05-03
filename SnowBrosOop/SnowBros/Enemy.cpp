@@ -145,7 +145,6 @@ void FlyingEnemy::update(float dt)
         float dx = patrolSpeed * direction * dt;
         body.move(dx, 0.f);
 
-        // Sine-wave vertical float
         float newY = baseY + amplitude * std::sin(frequency * timeAccum);
         body.setPosition(body.getPosition().x, newY);
 

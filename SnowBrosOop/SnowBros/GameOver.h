@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "statemanager.h"
+#include "SoundManager.h"
 
 class GameOverState : public State
 {

@@ -4,7 +4,6 @@
 class Tornado : public FlyingFooga
 {
 protected:
-    //float knifeTimer;
     float knifeCooldown;
 
     float teleportTimer;

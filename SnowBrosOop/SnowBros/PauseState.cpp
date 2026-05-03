@@ -37,10 +37,6 @@ void PauseState::handleInput(sf::Event& event)
         {
             manager.changeState(new MenuState(manager));
         }
-        //else if (event.key.code == sf::Keyboard::Escape)
-        //{
-        //    manager.quit();
-        //}
     }
 }
 
@@ -51,5 +47,4 @@ void PauseState::render(sf::RenderWindow& window)
     window.draw(title);
     window.draw(resumeText);
     window.draw(menuText);
-    //window.draw(exitText);
 }

@@ -1,11 +1,9 @@
 #include "Tornado.h"
 #include <iostream>
+#include <cstdlib>
 using namespace std;
 
-#include <cstdlib> // for rand()
-
-Tornado::Tornado(sf::Vector2f p)
-    : FlyingFooga(p)
+Tornado::Tornado(sf::Vector2f p) : FlyingFooga(p)
 {
     knifeTimer = 0.f;
     knifeCooldown = 3.0f;
@@ -13,34 +11,31 @@ Tornado::Tornado(sf::Vector2f p)
     teleportTimer = 0.f;
     teleportCooldown = 2.0f;
 
-    body.setFillColor(sf::Color::Yellow); // distinguish from others
+    body.setFillColor(sf::Color::Yellow);
 }
 void Tornado::update(float dt)
 {
-    // base behavior (ground + flying switching)
     FlyingFooga::update(dt);
 
     if (isrolling())
         return;
 
-    // ONLY modify behavior during flight
     if (isFlying)
     {
-        // --- 1. TELEPORT / JUMP MOVEMENT ---
+        //TELEPORT / JUMP MOVEMENT
         teleportTimer += dt;
 
         if (teleportTimer >= teleportCooldown)
         {
             teleportTimer = 0.f;
 
-            // random position on screen
             float x = static_cast<float>(rand() % 760);
             float y = static_cast<float>(rand() % 400);
 
             body.setPosition(x, y);
         }
 
-        // --- 2. RANDOM SPEED (unpredictable flight) ---
+        //  RANDOM SPEED (unpredictable flight)
         float randomSpeed = 50.f + (rand() % 200);
         body.move(flightDir * randomSpeed * dt);
 
@@ -51,18 +46,13 @@ void Tornado::update(float dt)
         if (body.getPosition().y <= 0 || body.getPosition().y >= 500)
             flightDir.y *= -1;
 
-        // --- 3. KNIFE ATTACK TIMER ---
+        // KNIFE ATTACK TIMER
         knifeTimer += dt;
 
         if (knifeTimer >= knifeCooldown)
         {
             knifeTimer = 0.f;
 
-            // TODO: integrate with your projectile system
-            // Example placeholder:
-            // spawnKnifeTowardPlayer();
-
-            // For now debug:
             cout << "Tornado throws knife!\n";
         }
     }

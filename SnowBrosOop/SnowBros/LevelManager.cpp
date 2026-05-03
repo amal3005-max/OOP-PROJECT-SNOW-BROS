@@ -1,96 +1,4 @@
 #include "LevelManager.h"
-//
-//LevelManager::LevelManager()
-//{
-//    currentLevel = 0;
-//    totalLevels = 10;
-//
-//    // ================= LEVEL 1 =================
-//    levels[0].levelNumber = 1;
-//
-//    // Platforms (from your image)
-//    levels[0].platformCount = 5;
-//    levels[0].platforms[0] = { {200, 450}, {200, 15} };
-//    levels[0].platforms[1] = { {450, 450}, {200, 15} };
-//    levels[0].platforms[2] = { {250, 350}, {150, 15} };
-//    levels[0].platforms[3] = { {500, 350}, {150, 15} };
-//    levels[0].platforms[4] = { {300, 250}, {200, 15} };
-//
-//    // Enemies
-//    levels[0].enemyCount = 2;
-//    levels[0].enemies[0] = { EnemyType::Botom, {100, 400} };
-//    levels[0].enemies[1] = { EnemyType::Botom, {600, 400} };
-//
-//    levels[0].hasMogera = false;
-//    levels[0].hasGamakichi = false;
-//    levels[0].hasGemRain = false;
-//
-//
-//    // ================= LEVEL 2 =================
-//    levels[1].levelNumber = 2;
-//
-//    levels[1].platformCount = 4;
-//    levels[1].platforms[0] = { {150, 450}, {200, 15} };
-//    levels[1].platforms[1] = { {450, 450}, {200, 15} };
-//    levels[1].platforms[2] = { {300, 300}, {200, 15} };
-//    levels[1].platforms[3] = { {300, 150}, {200, 15} };
-//
-//    levels[1].enemyCount = 3;
-//    levels[1].enemies[0] = { EnemyType::Botom, {100, 400} };
-//    levels[1].enemies[1] = { EnemyType::FlyingFoogaFog, {400, 200} };
-//    levels[1].enemies[2] = { EnemyType::Botom, {650, 400} };
-//
-//    levels[1].hasMogera = false;
-//    levels[1].hasGamakichi = false;
-//    levels[1].hasGemRain = false;
-//
-//
-//    // ================= LEVEL 5 (MOGERA) =================
-//    levels[4].levelNumber = 5;
-//    levels[4].platformCount = 2;
-//    levels[4].platforms[0] = { {200, 400}, {400, 20} };
-//    levels[4].platforms[1] = { {250, 200}, {300, 15} };
-//
-//    levels[4].enemyCount = 0;
-//    levels[4].hasMogera = true;
-//    levels[4].hasGamakichi = false;
-//    levels[4].hasGemRain = false;
-//
-//
-//    // ================= LEVEL 10 (GAMAKICHI) =================
-//    levels[9].levelNumber = 10;
-//    levels[9].platformCount = 1;
-//    levels[9].platforms[0] = { {100, 450}, {600, 20} };
-//
-//    levels[9].enemyCount = 0;
-//    levels[9].hasMogera = false;
-//    levels[9].hasGamakichi = true;
-//    levels[9].hasGemRain = true;
-//}
-//
-//
-//
-//LevelConfig& LevelManager::getCurrentLevel()
-//{
-//    return levels[currentLevel];
-//}
-//
-//void LevelManager::nextLevel()
-//{
-//    if (currentLevel < totalLevels - 1)
-//        currentLevel++;
-//}
-//
-//bool LevelManager::isLastLevel() const
-//{
-//    return currentLevel == totalLevels - 1;
-//}
-
-#include "LevelManager.h"
-#include <cstdlib>
-#include <ctime>
-
-#include "LevelManager.h"
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
@@ -107,14 +15,11 @@
 LevelManager::LevelManager()
 {
 
-    currentLevel = 9;
+    currentLevel = 0;
     totalLevels = 10;
 
     srand((time(0)));
 
-
-    // ── Randomly pick 2 non-boss levels as bonus levels each playthrough ─────
-    // eligible indices: 0,1,2,3,5,6,7,8  (levels 1-4 and 6-9)
     int eligible[8] = { 0, 1, 2, 3, 5, 6, 7, 8 };
     for (int i = 7; i >= 6; --i)
     {
@@ -141,25 +46,18 @@ LevelManager::LevelManager()
     //    (float)windowSize.y / textureSize.y
     //);
 
-    //loadBackgrounds();
     // =========================================================================
-    // LEVEL 1  — NES Floor 1
-    // Symmetric two-shelf + centre top bridge.  Introductory pace.
-    // Theme: Snowy Village
-    // =========================================================================
+    // LEVEL 1
     levels[0].levelNumber = 1;
     levels[0].platformCount = 0;
-    // bottom row — two wide outer shelves
+
     levels[0].platforms[levels[0].platformCount++] = { {  00, 440}, {200, 15} };
     levels[0].platforms[levels[0].platformCount++] = { { 600, 440}, {200, 15} };
     levels[0].platforms[levels[0].platformCount++] = {{300, 440}, {200, 15}};
 
-    // mid row — slightly narrower, inset
     levels[0].platforms[levels[0].platformCount++] = { { 150, 360}, {500, 20} };
-    // upper row
     levels[0].platforms[levels[0].platformCount++] = { { 000, 280}, {350, 20} };
     levels[0].platforms[levels[0].platformCount++] = { { 450, 280}, {350, 20} };
-    // top centre bridge
     levels[0].platforms[levels[0].platformCount++] = { { 200, 160}, {400, 70} };
     levels[0].platforms[levels[0].platformCount++] = { { 100, 200}, {600, 30} };
 
@@ -175,27 +73,22 @@ LevelManager::LevelManager()
     SET_FLAGS(0, false, false, false, (0 == bonus1 || 0 == bonus2),
         EnemyVariant::Red, LevelTheme::SnowyVillage)
 
-        // =========================================================================
-        // LEVEL 2  — NES Floor 2
-        // Staircase / offset grid rising left → right then back.
-        // Theme: Ice Cave
-        // =========================================================================
-        levels[1].levelNumber = 2;
+    // =========================================================================
+    // LEVEL 2  — NES Floor 2
+    levels[1].levelNumber = 2;
     levels[1].platformCount = 9;
-    // bottom pair
+
     levels[1].platforms[0] = { {  110, 388}, {90, 130} };
     levels[1].platforms[1] = { { 110, 480}, {540, 35} };
-    // ascending left stair
+
     levels[1].platforms[2] = { { 610, 290}, {90, 130} };
     levels[1].platforms[3] = { { 300, 390}, {400, 35} };
     
-    // centre top
     levels[1].platforms[4] = { { 155, 130}, {350, 35} };
     
-    // descending right stair
     levels[1].platforms[5] = { { 110, 220}, {90, 130} };
     levels[1].platforms[6] = { { 110, 310}, {400, 35} };
-    // centre low shelf
+
     levels[1].platforms[7] = { { 610, 140}, {90, 130} };
     levels[1].platforms[8] = { { 300, 210}, {400, 35} };
 
@@ -209,12 +102,10 @@ LevelManager::LevelManager()
     SET_FLAGS(1, false, false, false, (1 == bonus1 || 1 == bonus2),
         EnemyVariant::Red, LevelTheme::IceCave)
 
-        // =========================================================================
-        // LEVEL 3  — NES Floor 3
-        // Symmetric W-shape — three descending mid-shelves, outer pillars.
-        // Theme: Winter Forest
-        // =========================================================================
-        levels[2].levelNumber = 3;
+    // =========================================================================
+    // LEVEL 3 
+        
+    levels[2].levelNumber = 3;
     levels[2].platformCount = 16;
     // upper 3
     levels[2].platforms[0] = { { 160, 125}, {480, 50} };
@@ -252,12 +143,10 @@ LevelManager::LevelManager()
     SET_FLAGS(2, false, false, false, (2 == bonus1 || 2 == bonus2),
         EnemyVariant::Red, LevelTheme::WinterForest)
 
-        // =========================================================================
-        // LEVEL 4  — NES Floor 4
-        // Offset multi-row grid — introduces Tornado.
-        // Theme: Frozen Lake
-        // =========================================================================
-        levels[3].levelNumber = 4;
+    // =========================================================================
+    // LEVEL 4  — NES Floor 4
+
+    levels[3].levelNumber = 4;
     levels[3].platformCount = 12;
     levels[3].platforms[0] = { { 250, 125}, {450, 50} };
     levels[3].platforms[1] = { { 650, 125}, {50, 220} };
@@ -286,12 +175,9 @@ LevelManager::LevelManager()
     SET_FLAGS(3, false, false, false, (3 == bonus1 || 3 == bonus2),
         EnemyVariant::Red, LevelTheme::FrozenLake)
 
-        // =========================================================================
-        // LEVEL 5  — NES Floor 10  →  BOSS: Mogera
-        // Open arena with wide central platform and upper perch.
-        // Theme: Dark Underground Lair
-        // =========================================================================
-        levels[4].levelNumber = 5;
+    // =========================================================================
+    // LEVEL 5  — NES Floor 10  →  BOSS: Mogera    
+    levels[4].levelNumber = 5;
     levels[4].platformCount = 8;
     levels[4].platforms[0] = { {   0, 200}, {350, 40} }; 
     levels[4].platforms[1] = { { 160, 300}, {350, 40} }; 
@@ -306,13 +192,9 @@ LevelManager::LevelManager()
     SET_FLAGS(4, true, false, false, false,
         EnemyVariant::Red, LevelTheme::DarkLair)
 
-        // =========================================================================
-        // LEVEL 6  — NES Floor 11
-        // Ascending diagonal staircase left → right (purple/volcanic theme).
-        // Variant: Green  (speed x1.25, +1 hit to encase)
-        // Theme: Volcanic Wasteland
-        // =========================================================================
-        levels[5].levelNumber = 6;
+    // =========================================================================
+    // LEVEL 6  — NES Floor 11
+    levels[5].levelNumber = 6;
     levels[5].platformCount = 14;
     // main ascending staircase
     levels[5].platforms[0] = { { 150, 130}, {490, 45} };
@@ -348,13 +230,9 @@ LevelManager::LevelManager()
     SET_FLAGS(5, false, false, false, (5 == bonus1 || 5 == bonus2),
         EnemyVariant::Green, LevelTheme::VolcanicWasteland)
 
-        // =========================================================================
-        // LEVEL 7  — NES Floor 12
-        // Zigzag descending — platforms alternate left/right.
-        // Variant: Green → Blue boundary — use Blue here for variety
-        // Theme: Haunted Castle
-        // =========================================================================
-        levels[6].levelNumber = 7;
+    // =========================================================================
+    // LEVEL 7  — NES Floor 12    
+    levels[6].levelNumber = 7;
     levels[6].platformCount = 14;
     // top-left anchor
     levels[6].platforms[0] = { {   0, 130}, { 250, 40} };
@@ -388,13 +266,10 @@ LevelManager::LevelManager()
     SET_FLAGS(6, false, false, false, (6 == bonus1 || 6 == bonus2),
         EnemyVariant::Blue, LevelTheme::HauntedCastle)
 
-        // =========================================================================
-        // LEVEL 8  — NES Floor 13
-        // Interlocking H-frame — dense multi-row grid.
-        // Variant: Blue  (speed x1.5, +2 hits to encase)
-        // Theme: Alien Planet
-        // =========================================================================
-        levels[7].levelNumber = 8;
+    // =========================================================================
+    // LEVEL 8  — NES Floor 13
+
+    levels[7].levelNumber = 8;
     levels[7].platformCount = 12;
     // outer floor
     levels[7].platforms[0] = { { 250, 170}, { 310, 80} };
@@ -427,13 +302,10 @@ LevelManager::LevelManager()
     SET_FLAGS(7, false, false, false, (7 == bonus1 || 7 == bonus2),
         EnemyVariant::Blue, LevelTheme::AlienPlanet)
 
-        // =========================================================================
-        // LEVEL 9  — NES Floor 14
-        // Narrow ledges + large gaps — high-speed enemies, tight platforming.
-        // Variant: Gold  (speed x1.75, +3 hits to encase)
-        // Theme: Storm Clouds
-        // =========================================================================
-        levels[8].levelNumber = 9;
+    // =========================================================================
+    //LEVEL 9  — NES Floor 14
+        
+    levels[8].levelNumber = 9;
     levels[8].platformCount = 16;
     // bottom narrow ledges
     levels[8].platforms[0] = { { 205, 130}, { 395, 40} };
@@ -472,13 +344,9 @@ LevelManager::LevelManager()
     SET_FLAGS(8, false, false, false, (8 == bonus1 || 8 == bonus2),
         EnemyVariant::Gold, LevelTheme::StormClouds)
 
-        // =========================================================================
-        // LEVEL 10  — NES Floor 20  →  BOSS: Gamakichi
-        // Wide open final arena — side tactical ledges for player.
-        // hasGemRain = true so gems fall on boss defeat.
-        // Theme: Final Arena
-        // =========================================================================
-        levels[9].levelNumber = 10;
+    // =========================================================================
+    // LEVEL 10  — NES Floor 20  →  BOSS: Gamakichi    
+    levels[9].levelNumber = 10;
     levels[9].platformCount = 6;
     levels[9].platforms[0] = { { 100, 260}, {580, 40} };   // main arena floor
     levels[9].platforms[1] = { {   0, 350}, {290, 30} };   // left tactical ledge
@@ -490,8 +358,6 @@ LevelManager::LevelManager()
     levels[9].enemyCount = 0;
     SET_FLAGS(9, false, true, true, false,
         EnemyVariant::Red, LevelTheme::FinalArena)
-
-      
     //loadBackgrounds();
 }
 
@@ -510,31 +376,10 @@ bool LevelManager::isLastLevel() const
 {
     return currentLevel == totalLevels - 1;
 }
-//void LevelManager::drawBackground(sf::RenderWindow& window)
-//{
-//    backgroundSprite.setTexture(backgroundTextures[currentLevel]);
-//
-//    sf::Vector2u textureSize = backgroundTextures[currentLevel].getSize();
-//    sf::Vector2u windowSize = window.getSize();
-//
-//    backgroundSprite.setScale(
-//        (float)windowSize.x / textureSize.x,
-//        (float)windowSize.y / textureSize.y
-//    );
-//
-//    backgroundSprite.setPosition(0.f, 0.f);
-//
-//    window.draw(backgroundSprite);
-//}
-// 
 
 void LevelManager::drawBackground(sf::RenderWindow& window)
 {
-    //if (lastRenderedLevel != currentLevel)
-    //{
-    //    backgroundSprite.setTexture(backgroundTextures[currentLevel], true);
-    //    lastRenderedLevel = currentLevel;
-    //}
+    
     backgroundSprite.setTexture(backgroundTextures[currentLevel], true);
     lastRenderedLevel = currentLevel;
     sf::Vector2u textureSize = backgroundTextures[currentLevel].getSize();
@@ -548,19 +393,8 @@ void LevelManager::drawBackground(sf::RenderWindow& window)
     backgroundSprite.setPosition(0.f, 0.f);
 
     window.draw(backgroundSprite);
-    //if (backgroundTextures[currentLevel].getSize().x == 0) return; // skip if not loaded
-
-    //std::cout << "Drawing background for level " << currentLevel << " size: "
-    //    << backgroundTextures[currentLevel].getSize().x << "x"
-    //    << backgroundTextures[currentLevel].getSize().y << std::endl;
+    
 }
-//void LevelManager::drawBackground(sf::RenderWindow& window)
-//{
-//    if (currentLevel == 0)
-//    {
-//        window.draw(level1Sprite);
-//    }
-//}
 
 
 

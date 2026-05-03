@@ -4,11 +4,10 @@
 Knife::Knife(sf::Vector2f pos, sf::Vector2f dir)
     : Projectile(pos, dir * 150.f, 1.0f, true)
 {
-    body.setSize(sf::Vector2f(30, 8));   // bigger
-    body.setFillColor(sf::Color::Red);   // bright color
+    body.setSize(sf::Vector2f(30, 8));   
+    body.setFillColor(sf::Color::Red);   
     body.setPosition(pos);
 
-    // optional: rotate knife in direction of travel
     float angle = atan2(dir.y, dir.x) * 180.f / 3.14159f;
     body.setRotation(angle);
 }

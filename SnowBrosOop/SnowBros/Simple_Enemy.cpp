@@ -1,8 +1,6 @@
 #include "Enemy.h"
 
-
-SimpleEnemy::SimpleEnemy(EnemyType t, float spd, sf::Vector2f pos)
-    : Enemy(t, spd, pos)
+SimpleEnemy::SimpleEnemy(EnemyType t, float spd, sf::Vector2f pos) : Enemy(t, spd, pos)
 {
     body.setSize(sf::Vector2f(40, 40));
     body.setFillColor(sf::Color::Green);
@@ -39,11 +37,11 @@ void SimpleEnemy::update(float dt)
         pushable = true;
     }
 
-    // bounce off walls while rolling
+    // bounce off walls
     float x = body.getPosition().x;
     float width = body.getSize().x;
     const float leftBound = 0.f;
-    const float rightBound = 800.f; // match window width
+    const float rightBound = 800.f;
 
     if (isRolling)
     {
@@ -69,21 +67,19 @@ void SimpleEnemy::update(float dt)
     float xx = body.getPosition().x;
     float wwidth = body.getSize().x;
 
-    // check bottom + edges
     bool atBottom = (body.getPosition().y >= 500.f);
 
     if (isrolling() && atBottom)
     {
         if (xx <= 0.f || xx + wwidth >= 800.f)
         {
-            // reached left or right bottom edge
-            explode();   // we will define this
+            explode();
         }
     }
 }
 void Enemy::explode()
 {
-        alive = false;   // or set a flag
+        alive = false;
 }
 void SimpleEnemy::push(float dx)
 {

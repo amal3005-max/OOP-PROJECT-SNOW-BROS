@@ -11,17 +11,17 @@ class Gamakichi : public SimpleEnemy
 private:
     struct Cannon
     {
-        sf::Vector2f offset;   // position relative to boss CENTRE
-        float timer;    // counts up toward fireRate
-        float fireRate; // seconds between shots from this cannon
+        sf::Vector2f offset;  
+        float timer;  
+        float fireRate;
     };
 
     static const int MAX_CANNONS = 6;
     Cannon cannons[MAX_CANNONS];
 
     GamaPhase phase;
-    float idleTimer;       // drives the sine-wave float
-    sf::Vector2f basePosition;    // spawn anchor (never changes)
+    float idleTimer;   
+    sf::Vector2f basePosition;  
 
     void updatePhase();
 

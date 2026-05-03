@@ -49,16 +49,16 @@ void StateManager::render(sf::RenderWindow& window)
 void StateManager::pauseState(State* pauseState)
 {
     if (currentState)
-        previousState = currentState;   // save PlayState
+        previousState = currentState;
 
-    currentState = pauseState;         // switch to PauseState
+    currentState = pauseState;
 }
 void StateManager::resumeState()
 {
     if (currentState)
         delete currentState;
 
-    currentState = previousState;      // restore PlayState
+    currentState = previousState; 
     previousState = nullptr;
 }
 
